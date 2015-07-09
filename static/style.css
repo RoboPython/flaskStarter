@@ -8,3 +8,9 @@ body{
     border-color:#000000;
     border-width:2px;
 }
+
+.row{
+    padding:0px;
+    margin:0px;
+
+}
