@@ -8,12 +8,12 @@ app.debug = True
 
 @app.route('/')
 def index(name=None):
-    return render_template('hello.html', name=random.randint(1,1000))
+    return render_template('index.html', name=random.randint(1,1000))
 
 
 @app.route('/test')
 def test(name=None):
-    return render_template('hello.html', name=random.randint(1000,2000))
+    return render_template('index.html', name=random.randint(1000,2000))
 
 if __name__ == '__main__':
     app.run()
