@@ -7,7 +7,7 @@ app.debug = True
 
 
 @app.route('/')
-def hello(name=None):
+def index(name=None):
     return render_template('hello.html', name=random.randint(1,1000))
 
 
