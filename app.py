@@ -1,7 +1,9 @@
 from flask import Flask
 from flask import render_template
 import random
+from flask.ext.triangle import Triangle
 app = Flask(__name__)
+Triangle(app)
 
 app.debug = True
 

@@ -20,13 +20,7 @@
                             <h1>General Actions</h1>
 			</div> 
 		    </div>
-                    <div class ='col-md-4'>
-                        <p>List Versions on remote machine</p>
-                    </div>
-                    <div class ='col-md-6'>
-	               <button>Expand Task</button>
-                    </div>
-		</div>
+                </div>
 		<br>
 		<br>
                 <div class='row'>
@@ -41,26 +35,44 @@
 	            <div ng-show='adminActions'>
 		        <br>
 		        <br>
-                        <div class='row'>
-		            <div class ='col-md-4'>
-                                <p>Push a code fix to rc for approval</p>
+                        <div ng-controller='codeFix'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                    <p>Push a code fix to rc for approval</p>
+                                </div>
+                                <div class ='col-md-6'>
+	                           <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
                             </div>
-                            <div class ='col-md-6'>
-	                      <button>Expand Task</button>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
                             </div>
 	                </div>
 		   </div>
 	           <div ng-show='developerActions'>
-		       <br>
-		       <br>
-                       <div class='row'>
-		           <div class ='col-md-4'>
-                               <p>Create a copy of live site on my dev machine</p>
-                           </div>
-                           <div class ='col-md-6'>
-	                     <button>Expand Task</button>
-                           </div>
-	               </div>
+		        <br>
+		        <br>
+                        <div ng-controller='localCopy'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                    <p>Create a copy of the live site on local machine </p>
+                                </div>
+                                <div class ='col-md-6'>
+	                            <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
 		   </div>
                 </div>
             </div>
@@ -79,5 +91,22 @@
 
 
         });
+
+
+        app.controller('codeFix', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+        app.controller('localCopy', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+
     </script>
 </html>
