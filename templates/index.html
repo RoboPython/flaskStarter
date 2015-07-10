@@ -23,7 +23,7 @@
                     <div ng-controller='getVersion'>  
                         <div class='row'>
 		            <div class ='col-md-4'>
-                                <p>Push a code fix to rc for approval</p>
+                                <p>List Versions available on remote machine for a given brand code</p>
                             </div>
                             <div class ='col-md-6'>
 	                        <button ng-click='expandTask()'>Expand Task</button>
@@ -75,6 +75,25 @@
                             <div class='row'>
 		                <div class ='col-md-4'>
                                  <p>switch between which sites are linked as testing and latest on remote machine</p>
+                                </div>
+                                <div class ='col-md-6'>
+	                           <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
+		        <br>
+		        <br>
+                        <div ng-controller='releaseApproved'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                    <p>Push a code fix to rc for approval</p>
                                 </div>
                                 <div class ='col-md-6'>
 	                           <button ng-click='expandTask()'>Expand Task</button>
@@ -143,22 +162,16 @@
         });
 
 
-        app.controller('codeFix', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-        app.controller('localCopy', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-
+        /* General Actions */
         app.controller('getVersion', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+	/*Admin Actions*/
+        app.controller('codeFix', function($scope, $http) {
             $scope.taskShown = false;
 	    $scope.expandTask = function(){
                $scope.taskShown = !$scope.taskShown;
@@ -172,6 +185,31 @@
                $scope.taskShown = !$scope.taskShown;
             };
         });
+
+
+        app.controller('releaseApproved', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+
+        app.controller('releaseApproved', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+        /*Developer Actions*/
+        app.controller('localCopy', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
 
 
     </script>
