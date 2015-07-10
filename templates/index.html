@@ -20,6 +20,23 @@
                             <h1>General Actions</h1>
 			</div> 
 		    </div>
+                    <div ng-controller='getVersion'>  
+                        <div class='row'>
+		            <div class ='col-md-4'>
+                                <p>Push a code fix to rc for approval</p>
+                            </div>
+                            <div class ='col-md-6'>
+	                        <button ng-click='expandTask()'>Expand Task</button>
+                            </div>
+                        </div>
+                        <div ng-show ='taskShown'>
+                            <div class='row'>
+                                <div class='col-md-12'>
+                                     <p>expand</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 		<br>
 		<br>
@@ -27,8 +44,8 @@
 		    <div class='row'>
                         <div class ='col-md-6'>
 		            <ul class="nav nav-pills">
-		                <li role="presentation" class="active"><a ng-click='switchTabs()' href="#">Developer Actions</a></li>
-			        <li role="presentation"><a ng-click='switchTabs()' href="#">Admin Actions</a></li>
+		                <li role="presentation" ng-class='developerTab'><a ng-click='switchTabs("developer")' href="#">Developer Actions</a></li>
+			        <li role="presentation" ng-class='adminTab' ><a ng-click='switchTabs("admin")' href="#">Admin Actions</a></li>
 		 	    </ul>
                         </div>
 		    </div>
@@ -82,13 +99,27 @@
         var app = angular.module('mainApp', []);
 	
         app.controller('mainController', function($scope, $http) {
+	    $scope.adminTab = 'active';
+	    $scope.developerTab = '';
 	    $scope.adminActions = false;
 	    $scope.developerActions = true;
-            $scope.switchTabs = function(){
-		$scope.adminActions = !$scope.adminActions
-	        $scope.developerActions = !$scope.developerActions            
-	    };
+            $scope.switchTabs = function(tab){
+            if (tab == 'developer'){
+                $scope.adminTab ='';
+		$scope.developerTab = 'active';
+                $scope.adminActions = false;
+                $scope.developerActions = true;
+            };
+		
+            if (tab == 'admin'){
+                $scope.adminTab ='active';
+		$scope.developerTab = '';
+                $scope.adminActions = true;
+                $scope.developerActions = false;
+            };
 
+		            
+	    };
 
         });
 
@@ -107,6 +138,13 @@
             };
         });
 
+
+        app.controller('getVersion', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
 
     </script>
 </html>
