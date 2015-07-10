@@ -44,8 +44,8 @@
 		    <div class='row'>
                         <div class ='col-md-6'>
 		            <ul class="nav nav-pills">
-		                <li role="presentation" ng-class='developerTab'><a ng-click='switchTabs("developer")' href="#">Developer Actions</a></li>
-			        <li role="presentation" ng-class='adminTab' ><a ng-click='switchTabs("admin")' href="#">Admin Actions</a></li>
+		                <li role="presentation" ng-class='adminTab'><a ng-click='switchTabs("admin")' href="#">Admin Actions</a></li>
+			        <li role="presentation" ng-class='developerTab' ><a ng-click='switchTabs("developer")' href="#">Developer Actions</a></li>
 		 	    </ul>
                         </div>
 		    </div>
@@ -93,7 +93,26 @@
                         <div ng-controller='releaseApproved'>
                             <div class='row'>
 		                <div class ='col-md-4'>
-                                    <p>Push a code fix to rc for approval</p>
+                                 <p>Release an approved site to live from rc</p>
+                                </div>
+                                <div class ='col-md-6'>
+	                           <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
+		        <br>
+		        <br>
+                        <div ng-controller='rollBack'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                    <p>Roll back live Site</p>
                                 </div>
                                 <div class ='col-md-6'>
 	                           <button ng-click='expandTask()'>Expand Task</button>
@@ -115,6 +134,44 @@
                             <div class='row'>
 		                <div class ='col-md-4'>
                                     <p>Create a copy of the live site on local machine </p>
+                                </div>
+                                <div class ='col-md-6'>
+	                            <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
+		        <br>
+		        <br>
+                        <div ng-controller='updateCopy'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+				    <p>Update an old copy of the site from the current live site</p>                     
+                                </div>
+                                <div class ='col-md-6'>
+	                            <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
+		        <br>
+		        <br>
+                        <div ng-controller='updateRC'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                    <p>Update the RC or testing site with files and db from live </p>
                                 </div>
                                 <div class ='col-md-6'>
 	                            <button ng-click='expandTask()'>Expand Task</button>
@@ -195,7 +252,7 @@
         });
 
 
-        app.controller('releaseApproved', function($scope, $http) {
+        app.controller('rollBack', function($scope, $http) {
             $scope.taskShown = false;
 	    $scope.expandTask = function(){
                $scope.taskShown = !$scope.taskShown;
@@ -210,6 +267,20 @@
             };
         });
 
+        app.controller('updateCopy', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
+
+        app.controller('updateRC', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
 
 
     </script>
