@@ -20,26 +20,20 @@
                             <h1>General Actions</h1>
 			</div> 
 		    </div>
-                    <div ng-controller='getVersion'>  
-                        <div class='row'>
-		            <div class ='col-md-4'>
-                                <p>List Versions available on remote machine for a given brand code</p>
-                            </div>
-                            <div class ='col-md-6'>
-	                        <button ng-click='expandTask()'>Expand Task</button>
-                            </div>
-                        </div>
-                        <div ng-show ='taskShown'>
-                            <div class='row'>
-                                <div class='col-md-12'>
-                                     <p>expand</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class='row'>
+                        <div class='col-md-5'>
+			    <p>List Versions on a remote Machine<p>
+			</div>
+			<div class='col-md-3'>
+			    <button ng-click='expandTask("listVersions")' >Expand task</button>
+ 			</div>
                     </div>
-                </div>
-		<br>
-		<br>
+		    <div ng-show='tasks.listVersions' class='row'>
+		        <div class='col-md-4'>
+			    <p>expanded</p>
+		        </div>
+	            </div>
+                </div>		
                 <div class='row'>
 		    <div class='row'>
                         <div class ='col-md-6'>
@@ -50,142 +44,121 @@
                         </div>
 		    </div>
 	            <div ng-show='adminActions'>
-		        <br>
-		        <br>
-                        <div ng-controller='codeFix'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                    <p>Push a code fix to rc for approval</p>
-                                </div>
-                                <div class ='col-md-6'>
-	                           <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		        <br>
-		        <br>
-                        <div ng-controller='switchBetweenSites'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                 <p>switch between which sites are linked as testing and latest on remote machine</p>
-                                </div>
-                                <div class ='col-md-6'>
-	                           <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		        <br>
-		        <br>
-                        <div ng-controller='releaseApproved'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                 <p>Release an approved site to live from rc</p>
-                                </div>
-                                <div class ='col-md-6'>
-	                           <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		        <br>
-		        <br>
-                        <div ng-controller='rollBack'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                    <p>Roll back live Site</p>
-                                </div>
-                                <div class ='col-md-6'>
-	                           <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		   </div>
-	           <div ng-show='developerActions'>
-		        <br>
-		        <br>
-                        <div ng-controller='localCopy'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                    <p>Create a copy of the live site on local machine </p>
-                                </div>
-                                <div class ='col-md-6'>
-	                            <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		        <br>
-		        <br>
-                        <div ng-controller='updateCopy'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-				    <p>Update an old copy of the site from the current live site</p>                     
-                                </div>
-                                <div class ='col-md-6'>
-	                            <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		        <br>
-		        <br>
-                        <div ng-controller='updateRC'>
-                            <div class='row'>
-		                <div class ='col-md-4'>
-                                    <p>Update the RC or testing site with files and db from live </p>
-                                </div>
-                                <div class ='col-md-6'>
-	                            <button ng-click='expandTask()'>Expand Task</button>
-                                </div>
-                            </div>
-                            <div ng-show ='taskShown'>
-                                <div class='row'>
-                                    <div class='col-md-12'>
-                                        <p>expand</p>
-                                    </div>
-                                </div>
-                            </div>
-	                </div>
-		   </div>
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Push a code fix to RC for approval<p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("pushFix")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.pushFix' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+			 
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Switch between which sites are linked as testing and latest on a remote machine<p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("switchTestingLatest")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.switchTestingLatest' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Release approved site from RCe<p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("releaseApproved")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.releaseApproved' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Roll back the live site</p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("rollBack")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.rollBack' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+
+		    </div>
+	            <div ng-show='developerActions'>
+
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Pull a local copy of LIve site</p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("localCopy")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.localCopy' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Update an old copy of the site from current live state</p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("updateCopy")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.updateCopy' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+
+			<br>
+			<br>
+                        <div class='row'>
+                            <div class='col-md-5'>
+			        <p>Update the rc or testing site with files and db from live</p>
+			    </div>
+			    <div class='col-md-3'>
+			        <button ng-click='expandTask("updateCopy")' >Expand task</button>
+ 			    </div>
+                         </div>
+		         <div ng-show='tasks.freshenRemote' class='row'>
+		            <div class='col-md-4'>
+			        <p>expanded</p>
+		            </div>
+	                 </div>
+		    </div>
                 </div>
             </div>
         </div>
@@ -194,92 +167,39 @@
         var app = angular.module('mainApp', []);
 	
         app.controller('mainController', function($scope, $http) {
+            $scope.tasks ={'listVersions':false,
+			   'pushFix':false,
+                           'switchTestingLatest':false, 
+                           'releaseApproved':false,
+                           'rollBack':false,
+                           'localCopy':false,
+                           'updateCopy':false,
+                           'freshenRemote':false
+                          };
+	
+		
 	    $scope.adminTab = 'active';
 	    $scope.developerTab = '';
 	    $scope.adminActions = true;
 	    $scope.developerActions = false;
             $scope.switchTabs = function(tab){
-            if (tab == 'developer'){
-                $scope.adminTab ='';
-		$scope.developerTab = 'active';
-                $scope.adminActions = false;
-                $scope.developerActions = true;
-            };
+                if (tab == 'developer'){
+                    $scope.adminTab ='';
+		    $scope.developerTab = 'active';
+                    $scope.adminActions = false;
+                    $scope.developerActions = true;
+                };
 		
-            if (tab == 'admin'){
-                $scope.adminTab ='active';
-		$scope.developerTab = '';
-                $scope.adminActions = true;
-                $scope.developerActions = false;
+                if (tab == 'admin'){
+                    $scope.adminTab ='active';
+		    $scope.developerTab = '';
+                    $scope.adminActions = true;
+                    $scope.developerActions = false;
+                };
             };
-
-		            
+	    $scope.expandTask = function(task){
+		$scope.tasks[task] = !$scope.tasks[task]
 	    };
-
-        });
-
-
-        /* General Actions */
-        app.controller('getVersion', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-	/*Admin Actions*/
-        app.controller('codeFix', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-
-        app.controller('switchBetweenSites', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-
-        app.controller('releaseApproved', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-
-        app.controller('rollBack', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-        /*Developer Actions*/
-        app.controller('localCopy', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-        app.controller('updateCopy', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
-        });
-
-
-        app.controller('updateRC', function($scope, $http) {
-            $scope.taskShown = false;
-	    $scope.expandTask = function(){
-               $scope.taskShown = !$scope.taskShown;
-            };
         });
 
 
