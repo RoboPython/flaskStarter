@@ -69,6 +69,25 @@
                                 </div>
                             </div>
 	                </div>
+		        <br>
+		        <br>
+                        <div ng-controller='switchBetweenSites'>
+                            <div class='row'>
+		                <div class ='col-md-4'>
+                                 <p>switch between which sites are linked as testing and latest on remote machine</p>
+                                </div>
+                                <div class ='col-md-6'>
+	                           <button ng-click='expandTask()'>Expand Task</button>
+                                </div>
+                            </div>
+                            <div ng-show ='taskShown'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <p>expand</p>
+                                    </div>
+                                </div>
+                            </div>
+	                </div>
 		   </div>
 	           <div ng-show='developerActions'>
 		        <br>
@@ -101,8 +120,8 @@
         app.controller('mainController', function($scope, $http) {
 	    $scope.adminTab = 'active';
 	    $scope.developerTab = '';
-	    $scope.adminActions = false;
-	    $scope.developerActions = true;
+	    $scope.adminActions = true;
+	    $scope.developerActions = false;
             $scope.switchTabs = function(tab){
             if (tab == 'developer'){
                 $scope.adminTab ='';
@@ -145,6 +164,15 @@
                $scope.taskShown = !$scope.taskShown;
             };
         });
+
+
+        app.controller('switchBetweenSites', function($scope, $http) {
+            $scope.taskShown = false;
+	    $scope.expandTask = function(){
+               $scope.taskShown = !$scope.taskShown;
+            };
+        });
+
 
     </script>
 </html>
