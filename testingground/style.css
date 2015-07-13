@@ -1,0 +1,16 @@
+body{
+    background-color: #dddddd;
+}
+
+.main-area{
+    background-color:#ffffff;
+    border-style:solid;
+    border-color:#000000;
+    border-width:2px;
+}
+
+.row{
+    padding:0px;
+    margin:0px;
+
+}
