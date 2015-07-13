@@ -13,7 +13,7 @@ import json
 import subprocess
 import random
 import os
-
+import re
 
 app = Flask(__name__)
 Triangle(app)
@@ -38,10 +38,20 @@ def getVersion():
     os.chdir(PATH_TO_ANSIBLE)
     version_command =['ansible', '-i', 'inventory/cottage-servers',request.args['code'],  '-m', 'ntdr_get_version.py', '-a', 'path=/var/www']
     version_info = subprocess.check_output(version_command)
-    print version_info
-    return version_info
+    version_info = re.split('\n\s*\n', version_info)  
+
+    tempArray = []
+    for element in version_info:
+        element =  element.replace(request.args['code']+'_test | success >>','')
+        element =  element.replace(request.args['code']+'_live | success >>','')
+        tempArray.append(element)
+    
+    version_info = tempArray
 
 
+    versionData = '{versionData:[' +version_info[0]+','+version_info[1]+ ']}'
+
+    return versionData
 
 
 
