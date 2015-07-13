@@ -32,25 +32,14 @@ def index():
     return render_template('index.html', name=random.randint(1,1000))
 
 
-#using the just command line cheating method
-
-'''
-@app.route('/getVersion, methods=["GET"]')
-def getVersion():
-    pb = PlayBook(
-            playbook = ''
-
-'''
 #ansible -i inventory/cottage-servers zz -m ntdr_get_version.py -a path=/var/www -vvv
 @app.route('/getVersion', methods=['GET'])
 def getVersion():
     os.chdir(PATH_TO_ANSIBLE)
     version_command =['ansible', '-i', 'inventory/cottage-servers',request.args['code'],  '-m', 'ntdr_get_version.py', '-a', 'path=/var/www']
     version_info = subprocess.check_output(version_command)
-    version_info.replace('_live | success','')
     print version_info
-    return 'worked'
-
+    return version_info
 
 
 

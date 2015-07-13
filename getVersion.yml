@@ -1,0 +1,7 @@
+---
+- hosts: all
+  vars:
+    target: /var/www/testing
+    patch_release: true
+  roles:
+    - get-version
