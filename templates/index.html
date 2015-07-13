@@ -29,9 +29,15 @@
  			</div>
                     </div>
 		    <div ng-show='tasks.listVersions' class='row'>
-		        <div class='col-md-4'>
-			    <p>expanded</p>
+		        <div class='col-md-2'>
+			    <br>
+			    <input ng-model='brandCode' type='text' class='form-control' placeholder ='Brand Code'>
+			    <br>
 		        </div>
+			<div class ='col-md-offset'>
+			    <br>
+			    <button ng-click='listVersions(brandCode)'>Go!</button>
+		 	</div>
 	            </div>
                 </div>		
                 <div class='row'>
@@ -167,7 +173,8 @@
         var app = angular.module('mainApp', []);
 	
         app.controller('mainController', function($scope, $http) {
-            $scope.tasks ={'listVersions':false,
+            
+	    $scope.tasks ={'listVersions':false,
 			   'pushFix':false,
                            'switchTestingLatest':false, 
                            'releaseApproved':false,
@@ -197,9 +204,23 @@
                     $scope.developerActions = false;
                 };
             };
+
+
 	    $scope.expandTask = function(task){
 		$scope.tasks[task] = !$scope.tasks[task]
 	    };
+
+
+	    $scope.listVersions = function(brand_code){
+		console.log(brand_code);
+		$http.get('/getVersion?code='+brand_code ).
+		    success(function(data,status,headers,config){
+	                console.log(data)
+	            }).
+		    error(function(data,status,headers,config){
+		    });
+	    };
+
         });
 
 
