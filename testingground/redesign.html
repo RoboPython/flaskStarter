@@ -2,14 +2,21 @@
     <head>
         <link rel="stylesheet" type="text/css" href="bootstrap.css">
         <link rel="stylesheet" type="text/css" href="style.css">
+        <link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
         <script src="angular.js"></script>
         <script src="/static/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="row">
-            <div class = "col-md-6 col-md-offset-3 text-center">
+        	<div class="col-md-2">
+        		<img src="http://i.imgur.com/MK59sXc.png?2">
+        	</div>
+            <div class = "col-md-6 col-md-offset-1 text-center">
                 <title>Neontribe Tower</title>
-                <h1>Neontribe Tower</h1>
+                <h1>NEONTRIBE TOWER</h1>
             </div>
         </div>
         <div class="row">
@@ -17,7 +24,7 @@
 		<div class='row'>
                     <div class='row'>
 			<div class='col-md-6'>
-                            <h1>General Actions</h1>
+                            <h2>General actions</h2>
 			</div> 
 		    </div>
                     <div class='row'>
@@ -34,9 +41,7 @@
 			    <input ng-model='brandCode' type='text' class='form-control' placeholder ='Brand Code'>
 			    <br>
 		        </div>
-			<div class ='col-md-offset'>
-			    <br>
-			    <button ng-click='listVersions(brandCode)'>Go!</button>
+			
 		 	</div>
 	            </div>
                 </div>		
@@ -94,7 +99,7 @@
                          </div>
 		         <div ng-show='tasks.releaseApproved' class='row'>
 		            <div class='col-md-4'>
-			        <p>expanded</p>
+			        <p>Expanded</p>
 		            </div>
 	                 </div>
 
@@ -110,7 +115,7 @@
                          </div>
 		         <div ng-show='tasks.rollBack' class='row'>
 		            <div class='col-md-4'>
-			        <p>expanded</p>
+			        <p>Expanded</p>
 		            </div>
 	                 </div>
 
