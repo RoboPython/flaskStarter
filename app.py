@@ -3,12 +3,6 @@ from flask import render_template
 from flask import request
 from flask.ext.triangle import Triangle
 
-import ansible.runner 
-from  ansible.playbook import PlayBook
-from ansible.inventory import Inventory
-from ansible import callbacks
-from ansible import utils
-
 import json
 import subprocess
 import random
@@ -21,15 +15,15 @@ Triangle(app)
 PATH_TO_ANSIBLE = '/home/vagrant/ansible/ntdr-pas/playbooks/'    
 app.debug = True
 
-utils.VERBOSITY = 0
-playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
-stats = callbacks.AggregateStats()
-runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
 
 
 @app.route('/')
 def index():
     return render_template('index.html', name=random.randint(1,1000))
+
+@app.route('/tom')
+def jsteaching():
+    return render_template('jsteaching.html', name=random.randint(1,1000))
 
 
 #ansible -i inventory/cottage-servers zz -m ntdr_get_version.py -a path=/var/www -vvv
