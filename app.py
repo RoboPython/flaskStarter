@@ -49,7 +49,7 @@ def getVersion():
     version_info = tempArray
 
 
-    versionData = '{versionData:[' +version_info[0]+','+version_info[1]+ ']}'
+    versionData = '{"versionData":{ "test":' +version_info[0]+', "live":'+version_info[1]+ '}}'
 
     return versionData
 
