@@ -46,7 +46,7 @@
 						   <div ng-show='loading.listVersions'>
 						       <img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'>
 						   </div>
-						   <p>insert elliotts task bars</p>
+						   <p>Insert Elliotts Test Parts</p>
 						   <p>Current Test Version:{{listOfVersions.versionData.test.stat.version | angular}}</p>
 						   <p>Current Live Version:{{listOfVersions.versionData.live.stat.version | angular}}</p>
 					   </div>
@@ -205,74 +205,8 @@
    </body>
    <script>
       var app = angular.module('mainApp', []);
-      
-      app.controller('mainController', function($scope, $http) {
-      $scope.version = {"live":"","test":""};            
-      $scope.tasks ={'listVersions':false,
-      'pushFix':false,
-                         'switchTestingLatest':false, 
-                         'releaseApproved':false,
-                         'rollBack':false,
-                         'localCopy':false,
-                         'updateCopy':false,
-                         'freshenRemote':false
-                        };
-      
-      $scope.loading ={'listVersions':false,
-      					 'pushFix':false,
-                         'switchTestingLatest':false, 
-                         'releaseApproved':false,
-                         'rollBack':false,
-                         'localCopy':false,
-                         'updateCopy':false,
-                         'freshenRemote':false
-                        };
-
-      
-      $scope.adminTab = 'active';
-      $scope.developerTab = '';
-      $scope.adminActions = true;
-      $scope.developerActions = false;
-          $scope.switchTabs = function(tab){
-              if (tab == 'developer'){
-                  $scope.adminTab ='';
-      $scope.developerTab = 'active';
-                  $scope.adminActions = false;
-                  $scope.developerActions = true;
-              };
-      
-              if (tab == 'admin'){
-                  $scope.adminTab ='active';
-      $scope.developerTab = '';
-                  $scope.adminActions = true;
-                  $scope.developerActions = false;
-              };
-          };
-      
-      
-      $scope.expandTask = function(task){
-      $scope.tasks[task] = !$scope.tasks[task]
-      };
-      
-      
-      $scope.listVersions = function(brand_code){
-          console.log(brand_code);
-		  $scope.loading.listVersions = true;
-          $http.get('/getVersion?code='+brand_code ).
-             success(function(data,status,headers,config){
-			   $scope.loading.listVersions = false;
-               console.log(data)
-			   $scope.listOfVersions = data;
-			   $scope.testVersion = data["versionData"]["test"]["stat"]["version"]
-			   console.log($scope.testVersion = data["versionData"]["test"]["stat"]["version"])
-             }).
-             error(function(data,status,headers,config){
-             });
-      };
-      
-      });
-      
-      
    </script>
+   <script src="/static/main.js"></script>
+  
 </html>
 
