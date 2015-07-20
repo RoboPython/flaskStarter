@@ -1,16 +1,61 @@
+
 body{
     background-color: #dddddd;
+    background: url(http://i.imgur.com/RgvoVMU.png) repeat 0 0;
 }
 
 .main-area{
     background-color:#ffffff;
     border-style:solid;
-    border-color:#000000;
-    border-width:2px;
+    border-color:#989898;
+    border-width: 1px;
 }
 
 .row{
-    padding:0px;
-    margin:0px;
+    padding:2px;
+    margin:2px;
+
+}
+
+h1 {
+    font-weight: bold;
+    font-family: 'Oswald', cursive;
+    font-size: 40px;
+}
+
+h2 {
+	font-weight: bold;
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 25px;
+}
+
+p {
+    font-family: 'Play', sans-serif;
+    font-size: 15px;
+}
+
+a {
+    font-family: 'Play', sans-serif;
+    font-size: 15px;
+}
+
+.tick-img{
+    width: 50px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+.testclass{
+	padding-top: 9px;
+}
+
+
+.taskbar{
+    border-width: 2px;
+    border-style: solid;
+    border-color:#bbbbbb;
+	background-color:#dddddd;
+
 
 }
