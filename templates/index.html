@@ -1,353 +1,134 @@
 <html ng-app='mainApp' ng-controller='mainController'>
-   <head>
-      <link rel="stylesheet" type="text/css" href="/static/bootstrap.css">
-      <link rel="stylesheet" type="text/css" href="/static/style.css">
-      <script src="/static/angular.js"></script>
-      <script src="/static/bootstrap.min.js"></script>
-      <link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'/>
-      <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'/>
-      <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
-      <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'/>
-   </head>
-   <body>
-      <div class="row">
-		 <div class= 'col-md-2'>
-             <img src="http://i.imgur.com/MK59sXc.png?2">
-		 </div>
-         <div class = "col-md-6 col-md-offset-1 text-center">
-            <title>Neontribe Tower</title>
-            <h1>NEONTRIBE TOWER</h1>
-         </div>
-      </div>
-      <div class="row">
-         <div class = "col-md-10 col-md-offset-1 main-area ">
-            <div class='row'>
-               <div class='row'>
-                  <div class='col-md-6'>
-					  <b><h2>General Actions </h2></b>
-                  </div>
-               </div>
-               <div class='row'>
-                  <div class='col-md-5'>
-                     <p>List Versions on a remote Machine
-                     <p>
-                  </div>
-                  <div class='col-md-3'>
-                     <button ng-click='expandTask("listVersions")' >Expand task</button>
-                  </div>
-               </div>
-			   <div ng-show='controlList.listVersions.expanded'>
-				  <div class='row'>
-                      <div class='col-md-2'>
-                         <br>
-                         <input ng-model='controlList.listVersions.path' type='text' class='form-control' placeholder ='File Path'>
-				     </div>
-				 </div>
-				 <div class='row'>
-					<div class='col-md-2'>
-                         <input ng-model='controlList.listVersions.brandCode' type='text' class='form-control' placeholder ='Brand Code'>
-                      </div>
-                      <div class ='col-md-2'>
-                          <button ng-click='listVersions(controlList.listVersions.brandCode,controlList.listVersions.path)'>Go!</button>
-                      </div>
-			       </div>
-				   <div class='row'>
-					   <div class='col-md-4'>
-						   <div ng-show='controlList.listVersions.loading'>
-						       <img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'>
-						   </div>
-						   <div ng-show='controlList.listVersions.loaded'>
-							   <div ng-repeat="task in controlList.listVersions.results.meta.tasks ">
-								   <br>
-								   <div class='taskbar'>
-									   <div class='row'>
-										   <div class='col-md-10'>
-											   <h4 class='testclass'>{{task.name | angular}}</h4>
-										   </div>
-										   <div class='col-md-2' ng-if='task.success'>
-											   <img class='tick-img' src="{{tick | angular}}">
-										   </div> 
-										   <div class='col-md-2' ng-if='!task.success'>
-											   <img class='tick-img' src="{{cross | angular}}">
-										   </div>
-									   </div>
-									   <div class='row'>
-										   <div class='col-md-12' ng-if='!task.success' >
-											   <p>ERROR: {{task.errorMessage | angular}}</p>
-										   </div>
-										   <div class='col-md-12' ng-if='task.success' >
-											   <p>This task was successful</p>
-										   </div>
-									   </div>
-								   </div>
-							   </div>
-							   <br>
-							   <div class='taskbar'>
-								   <h2 class='text-center'>Results</h2>
-								   <p class='text-center'>Current Version, Test Server, Testing: {{controlList.listVersions.results.versionData.test.stat.testing.version | angular}}</p>
-								   <p class='text-center'>Current Version, Test Server, Latest: {{controlList.listVersions.results.versionData.test.stat.latest.version | angular}}</p>
-								   <p class='text-center' >Current Version, Live Server, Testing: {{controlList.listVersions.results.versionData.live.stat.testing.version | angular}}</p>
-								   <p class='text-center'>Current Version, Live Server, Latest: {{controlList.listVersions.results.versionData.live.stat.latest.version | angular}}</p> 
-						   	    </div>
-						   </div>
-					   </div>
-				   </div>
-               </div>
-            </div>
-            <div class='row'>
-               <div class='nav nav-pills'>
-                        <li role="presentation" ng-class='adminTab'><a href='' ng-click='switchTabs("admin")'>Admin Actions</a></li>
-                        <li role="presentation" ng-class='developerTab' ><a href='' ng-click='switchTabs("developer")'>Developer Actions</a></li>
-                     </ul>
-                  </div>
-               </div>
-               <div ng-show='adminActions'>
-                  <br>
-                  <br>
-                  <div class='row'>
-                     <div class='col-md-5'>
-                        <p>Push a code fix to RC for approval
-                        <p>
-                     </div>
-                     <div class='col-md-3'>
-                        <button ng-click='expandTask("pushFix")' >Expand task</button>
-                     </div>
-                  </div>
-                  <div ng-show='controlList.pushFix.expanded' class='row'>
-                     <div class='col-md-4'>
-                        <p>expanded</p>
-					</div>
-                  </div>
-                  <br>
-                  <br>
-                  <div class='row'>
-                     <div class='col-md-5'>
-                        <p>Switch between which sites are linked as testing and latest on a remote machine
-                        <p>
-                     </div>
-                     <div class='col-md-3'>
-                        <button ng-click='expandTask("switchTestingLatest")' >Expand task</button>
-                     </div>
-                  </div>
-                  <div ng-show='controlList.switchTestingLatest.expanded' class='row'>
-                     <div class='col-md-2'>
-                        <input type='text' class='form-control' placeholder='Brand Code'></input>
-                     </div>
-                     <div class='col-md-2'>
-                        <button>Go!</button>
-                     </div>
-                  </div>
-                  <br>
-                  <br>
-                  <div class='row'>
-                     <div class='col-md-5'>
-                        <p>Release approved site from RC
-                        <p>
-                     </div>
-                     <div class='col-md-3'>
-                        <button ng-click='expandTask("releaseApproved")' >Expand task</button>
-                     </div>
-                  </div>
-                  <div ng-show='controlList.releaseApproved.expanded'>
-                     <div class='row'>
-                        <div class='col-md-4'>
-                           <form>
-                              <input type="radio" name="update" value="patch">patch
-                              <br>
-                              <input type="radio" name="update" value="minor">minor
-                              <br>
-                              <input type="radio" name="update" value="major">major
-                           </form>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class='col-md-2'>
-                           <input type='text' class='form-control' placeholder='Brand Code'></input>
-                        </div>
-			<br>
-                        <div class="col-md-1">
-                           <button>Go!</button>
-                        </div>
-                     </div>
-                  </div>
-                  <br>
-                  <br>
-                  <div class='row'>
-                     <div class='col-md-5'>
-                        <p>Roll back the live site</p>
-                     </div>
-                     <div class='col-md-3'>
-                        <button ng-click='expandTask("rollBack")' >Expand task</button>
-                     </div>
-                  </div>
-                  <div ng-show='controlList.rollBack.expanded'>
-                     <div class="row">
-                        <div class='col-md-2'>
-                           <input type='text' class='form-control' placeholder='Brand Code'></input>
-                        </div>
-			<div class='col-md-3'>
-                           <select>
-                              <option value="zz_0.0.1">zz_0.0.1</option>
-                              <option value="zz_0.0.2">zz_0.0.2</option>
-                              <option value="zz_0.0.3">zz_0.0.3</option>
-                              <option value="zz_0.0.4">zz_0.0.4</option>
-                           </select>
-			</div>
-                     </div>
-                     <div class="row">
-                        <div class="col-md-1">
-                           <button>Go!</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-      <div ng-show='developerActions'>
-         <br>
-         <br>
-         <div class='row'>
-            <div class='col-md-5'>
-               <p>Pull a local copy of Live site</p>
-            </div>
-			<div class='col-md-3'>
-				<button ng-click='expandTask("localCopy")'>Expand task</button>
-			</div>
-        </div>
-		<div ng-show='controlList.localCopy.expanded'>
-			<div class='row'>
-				<div class='col-md-3'>
-					<p>expanded</p>
-				</div>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/static/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/redesign.css"/>
+		<script src="/static/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="/static/bootstrap.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'/>
+	</head>
+	<body>
+		<div class='row header-bar'>
+			<div class='col-md-12'>
+           		<img src="http://i.imgur.com/MK59sXc.png?2">
 			</div>
 		</div>
-         <br>
-         <br>
-         <div class='row'>
-            <div class='col-md-5'>
-               <p>Update an old copy of the site from current live state</p>
-            </div>
-            <div class='col-md-3'>
-               <button ng-click='expandTask("updateCopy")' >Expand task</button>
-            </div>
-         </div>
-         <div ng-show='controlList.updateCopy.expanded' class='row'>
-            <div class='col-md-4'>
-               <p>expanded</p>
-            </div>
-         </div>
-         <br>
-         <br>
-         <div class='row'>
-            <div class='col-md-5'>
-               <p>Update the rc or testing site with files and db from live</p>
-            </div>
-            <div class='col-md-3'>
-               <button ng-click='expandTask("freshenRemote")' >Expand task</button>
-            </div>
-         </div>
-         <div ng-show='controlList.freshenRemote.expanded' class='row'>
-            <div class='col-md-4'>
-               <p>expanded</p>
-            </div>
-         </div>
-      </div>
-   </body>
-   <script>
-      var app = angular.module('mainApp', []);
-	app.controller('mainController', function($scope, $http) {
-	$scope.tick = "http://i.imgur.com/ATfTAaB.png" 
-	$scope.cross = "http://i.imgur.com/PZvHtcx.png"
-	$scope.version = {"live":"","test":""};            
-    $scope.activeTab = 'listVersions';	
-	$scope.controlList ={'listVersions':{
-										 'expanded':false,
-										 'loading':false,
-										 'loaded':false, 
-										 'brandCode':null,
-										 'path':'/var/www',
-										 'results':null
-										 },
+		<div class='row'>
+			<div class='col-md-2 sidebar'>
+				<div class='row sidebar-item' ng-click='expandTask("listVersions")'>
+					<h4>See Versions</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("pushFix")'  >
+					<h4>Push code fix to RC for approval</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("switchTestingLatest")' >
+					<h4>Switch Latest and Testing Sites</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("releaseApproved")' >
+					<h4>Released approved site from RC</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("rollBack")'  >
+					<h4>Roll back live site</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("localCopy")'  >
+					<h4>Pull a local copy of live Site</h4>
+				</div>
+				<div class='row sidebar-item'  ng-click='expandTask("updateCopy")'>
+					<h4>Update Copy from Live</h4>
+				</div>
+				<div class='row sidebar-item' ng-click='expandTask("freshenRemote")' >
+					<h4>Update RC from live</h4>
+				</div>
+			</div>
+			<div class='col-md-10'>
+				<div class='row info-bar'>
+					<div class='col-md-4 form-inline' role='form'>
+						<h2>
+							Server Group Selected:
+							<select ng-model='brandCodeSelected'>
+								<option value='br'>BR</option>
+								<option value='ch'>CH</option>
+								<option value='ly'>LY</option>
+								<option value='fbm'>FBM</option>
+								<option value='wl'>WL</option>
+								<option value='zz'>ZZ</option>
+							</select>
+						</h2>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "listVersions"'>
+					<div class='col-md-12'>
+						<div class='row'>
+							<div class='col-md-6 col-md-offset-1'>
+								<br>
+								<h2> File Tree with available versions for the currently selected server</h2>
+								<button ng-click='getFiletree(brandCodeSelected)' class="btn btn-default btn-lg" >Check for updates to file tree</button>
+								<h3>Displaying Json in html tricky. Can wait for interns</h3>
+								<p>{{filetree | angular}}</p>
 
- 						'pushFix':{'loading':false,
-								   'loaded':false, 
-						           },
-
- 						'switchTestingLatest':{
-										 'loading':false,
-										 'loaded':false,
-						                 },
-
- 						'releaseApproved':{
-										 'loading':false,
-										 'loaded':false,
-										 },
-
- 						'rollBack':{
-						   			'loading':false,
-								    'loaded':false,	     
-								    },
-
- 						'localCopy':{
-										 'loading':false,
-										 'loaded':false,
-										 
-										  },
-
- 						'updateCopy':{
-										 'loading':false,
-										 'loaded':false,
-										 
-									 },
-
- 						'freshenRemote':{
-										 'loading':false,
-										 'loaded':false,
-										 
-										},
-	};
-
-
-
-	$scope.adminTab = 'active';
-	$scope.developerTab = '';
-	$scope.adminActions = true;
-	$scope.developerActions = false;
-	$scope.switchTabs = function(tab){
-		if (tab == 'developer'){
-			$scope.adminTab ='';
-			$scope.developerTab = 'active';
-			$scope.adminActions = false;
-			$scope.developerActions = true;
-		};
-
-		if (tab == 'admin'){
-			$scope.adminTab ='active';
-			$scope.developerTab = '';
-			$scope.adminActions = true;
-			$scope.developerActions = false;
-		};
-	};
-
-	$scope.expandTask = function(task){
-		$scope.controlList[task].expanded = !$scope.controlList[task].expanded
-	};
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "pushFix"'>
+					<div class='col-md-12'>
+						<p>expanded2</p>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "switchTestingLatest"'>
+					<div class='col-md-12'>
+						<p>coming soon</p>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "releaseApproved"'>
+					<div class='col-md-12'>
+						<p>release approved</p>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "rollBack"'>
+					<div class='col-md-12'>
+						<p>roll back</p>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "localCopy"'>
+					<div class='col-md-12'>
+						<div class='row'>
+							<div class='col-md-6 col-md-offset-1'>
+								<h2>Pull A local Copy</h2>
+								<button ng-click='localCopy(brandCodeSelected)' class="btn btn-default btn-lg" >Pull Local Copy</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "updateCopy"'>
+					<div class='col-md-12'>
+						<p>update copy</p>
+					</div>
+				</div>
+				<div class='row' ng-show='activeTab == "freshenRemote"'>
+					<div class='col-md-12'>
+						<p>freshen remote</p>
+					</div>
+				</div>
 
 
-	$scope.listVersions = function(brand_code,path){
-		$scope.controlList.listVersions.loading =true;
-		$scope.controlList.listVersions.loaded = false;
-		$http.get('/getVersion?code='+brand_code+'&path='+path).
-			success(function(data,status,headers,config){
-				$scope.controlList.listVersions.loading =false;
-				$scope.controlList.listVersions.loaded = true;
-				$scope.controlList.listVersions.results = data;
-			}).
-		    error(function(data,status,headers,config){
-		    });
-	};
-});
 
 
-   </script>
-  
+			</div>
+		</div>
+	</body>
+	<script>
+		var app = angular.module('mainApp', [])
+			.service('sharedProps',function(){
+				return{
+					filetreeData:JSON.parse('{{data | safe}}'),
+				};
+			});	
+	</script>
+	<script src="/static/angularConfig.js"></script>
+	<script src="/static/maincontroller.js"></script>
 </html>
 

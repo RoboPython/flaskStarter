@@ -9,12 +9,33 @@ import random
 import os
 import re
 
+
+from ansible.playbook import PlayBook
+from ansible.inventory import Inventory
+from ansible import callbacks
+from ansible import utils
+
 app = Flask(__name__)
 Triangle(app)
 
-PATH_TO_ANSIBLE = '/home/vagrant/ansible/ntdr-pas/playbooks/'    
-PATH_PYTHON_APP = '/home/vagrant/flaskStarter/'
+
+config = open('pythonConfig.txt','r')
+config = json.loads(config.read())
+
+PATH_TO_ANSIBLE = config['path_to_ansible']    
+PATH_PYTHON_APP = config['path_python_app']
 app.debug = True
+
+
+
+utils.VERBOSITY  = 0
+playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
+stats = callbacks.AggregateStats()
+runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
+
+
+
+
 
 
 def command_parser(string_value,brandcode): 
@@ -39,18 +60,18 @@ def command_parser(string_value,brandcode):
 
 
 
+
+
+
+
+
+
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-
-
-@app.route('/redesign')
 def redesign():
     f = open('filetree.txt','r')
     filetree_cache = f.read()
     f.close()
-    return render_template('redesign.html', data = filetree_cache)
+    return render_template('index.html', data = filetree_cache)
 
 
 
@@ -60,7 +81,7 @@ def redesign():
 @app.route('/getFiletree', methods=['GET'])
 def getFiletree():
 
-    server_codes = ['zz']
+    server_codes = config['list_of_servers']
     returnObj = {}
     for code in server_codes:
         print 'we are doing stuff honest'
@@ -103,47 +124,28 @@ def getFiletree():
 
 
 
-#ansible -i inventory/cottage-servers zz -m ntdr_get_version.py -a path=/var/www -vvv
-@app.route('/getVersion', methods=['GET'])
-def getVersion():
-    os.chdir(PATH_TO_ANSIBLE)
-    version_command =['ansible', '-i', 'inventory/cottage-servers',request.args['code'],  '-m', 'ntdr_get_version_improved.py', '-a', 'path='+request.args['path']]
-    version_info = subprocess.check_output(version_command)
 
-    
-    version_info = re.split('\n\s*\n', version_info)  
 
-    tempArray = []
-    for element in version_info:
-        element =  element.replace(request.args['code']+'_test | success >>','')
-        element =  element.replace(request.args['code']+'_live | success >>','')
-        tempArray.append(element)
-    
-    version_info = tempArray
-   
-    #as this task is not running from a playbook the fact it is made of one task is hardcoded.
-    tasks = [
-             {
-                "name":"Get Versions available on servers",
-                "success":True,
-                "errorMessage":None
-             }
-    ]
 
-    version_data = {
-                        'versionData':{
-                                'test':json.loads(version_info[0]),
-                                'live':json.loads(version_info[1])
-                        },
-                        'meta':{
-                            'tasks':tasks
-                        }
-                    }
-    
-    version_data = json.dumps(version_data, separators =(',',':'))
-    
-    return version_data
+'''
+ansible-playbook pull-full-copy.yml \
+          -i inventory/cottage-servers \
+            --limit zz_test \
+              --extra-vars="target=/var/www/zz_0.0"
+'''
 
+@app.route('/localCopy',methods=['GET'])
+def localCopy():
+    pb =PlayBook(
+        playbook='/home/vagrant/ansible/ntdr-pas/playbooks/pull-full-copy.yml',
+        host_list='/home/vagrant/ansible/ntdr-pas/playbooks/inventory/cottage-servers',
+        callbacks=playbook_cb,
+        runner_callbacks=runner_cb,
+        stats=stats,
+    )
+    results =pb.run()
+    print results
+    return 'yeah you got to switchTestingLatest well done'
 
 
 

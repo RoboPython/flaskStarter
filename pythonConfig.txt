@@ -1,0 +1,9 @@
+{
+    "list_of_servers": [
+        "zz"
+    ],
+    "path_to_ansible": "/home/vagrant/ansible/ntdr-pas/playbooks/",
+    "path_python_app":"/home/vagrant/flaskStarter/"
+
+}
+
