@@ -37,7 +37,7 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
  						'localCopy':{
 										 'loading':false,
 										 'loaded':false,
-										 
+										 'destination':'/var/tmp'
 										  },
 
  						'updateCopy':{
@@ -97,10 +97,15 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 			});
 	};
 
-	$scope.localCopy  = function(brand_code){
-		$http.get('/localCopy?code='+brand_code).
+	$scope.localCopy  = function(brand_code,path){
+		$scope.controlList.localCopy.loading = true;
+		$scope.controlList.localCopy.loaded = false;
+		$http.get('/localCopy?code='+brand_code+'&path='+path).
 			success(function(data,status,headers,config){
-				console.log('success')
+				console.log('success');
+				$scope.controlList.localCopy.loading = false;
+				$scope.controlList.localCopy.loaded = true;
+				$scope.controlList.localCopy.data = data;
 			}).
 			error(function(data,status,headers,config){
 				console.log('failure')

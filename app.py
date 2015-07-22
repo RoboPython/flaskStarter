@@ -3,17 +3,12 @@ from flask import render_template
 from flask import request
 from flask.ext.triangle import Triangle
 
+import re
 import json
 import subprocess
 import random
 import os
-import re
-
-
-from ansible.playbook import PlayBook
-from ansible.inventory import Inventory
-from ansible import callbacks
-from ansible import utils
+import neonAnsible
 
 app = Flask(__name__)
 Triangle(app)
@@ -24,21 +19,12 @@ config = json.loads(config.read())
 
 PATH_TO_ANSIBLE = config['path_to_ansible']    
 PATH_PYTHON_APP = config['path_python_app']
+
 app.debug = True
 
 
 
-utils.VERBOSITY  = 0
-playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
-stats = callbacks.AggregateStats()
-runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
-
-
-
-
-
-
-def command_parser(string_value,brandcode): 
+def task_parser(string_value,brandcode): 
     string_value = re.split('\n\s*\n', string_value)  
     
     tempArray = []
@@ -56,13 +42,6 @@ def command_parser(string_value,brandcode):
         tempArray.append(element)
     
     return tempArray
-
-
-
-
-
-
-
 
 
 
@@ -88,7 +67,7 @@ def getFiletree():
         os.chdir(PATH_TO_ANSIBLE)
         filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
         filetree = subprocess.check_output(filetree_command)
-        filetree = command_parser(filetree,code)
+        filetree = task_parser(filetree,code)
         
         tasks = [
                 {
@@ -136,17 +115,15 @@ ansible-playbook pull-full-copy.yml \
 
 @app.route('/localCopy',methods=['GET'])
 def localCopy():
-    pb =PlayBook(
-        playbook='/home/vagrant/ansible/ntdr-pas/playbooks/pull-full-copy.yml',
-        host_list='/home/vagrant/ansible/ntdr-pas/playbooks/inventory/cottage-servers',
-        callbacks=playbook_cb,
-        runner_callbacks=runner_cb,
-        stats=stats,
-    )
-    results =pb.run()
-    print results
-    return 'yeah you got to switchTestingLatest well done'
+    print 'doing my thing'
+    results =  neonAnsible.Playbook(folder_path='/home/vagrant/ansible/ntdr-pas/playbooks',
+                   playbook='pull-full-copy.yml',
+                   limit = 'zz_test',
+                   host_list='cottage-servers',
+                   extra_vars={'source':'/var/www/zz_0.0','local':request.args['path'],'mysql_root_pw':'cuffhattieslipper'})
 
+    return json.dumps(results)
+    
 
 
 if __name__ == '__main__':

@@ -56,6 +56,25 @@ a {
     border-style: solid;
     border-color:#bbbbbb;
 	background-color:#dddddd;
-
-
 }
+
+
+/*task return colors*/
+
+.changed{
+	color:#cccc00;
+}
+
+.success{
+	color:#66ff66;
+}
+
+.failed{
+	color:#ff0000;
+}
+
+.skipped{
+	color:#0099ff;
+}
+
+

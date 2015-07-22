@@ -1,0 +1,77 @@
+PLAY [all] ******************************************************************** 
+
+GATHERING FACTS *************************************************************** 
+ok: [zz_live]
+ok: [zz_test]
+
+TASK: [pull-full-copy | stat path={{ local }}/sites/default/settings.php] ***** 
+ok: [zz_live -> 127.0.0.1]
+ok: [zz_test -> 127.0.0.1]
+
+TASK: [pull-full-copy | stat path={{ local }}] ******************************** 
+ok: [zz_test -> 127.0.0.1]
+ok: [zz_live -> 127.0.0.1]
+
+TASK: [pull-full-copy | ntdr_get_version.py path={{ source }}] **************** 
+ok: [zz_live]
+ok: [zz_test]
+
+TASK: [pull-full-copy | stat path={{ source }}/sites/all/drush/{{ source_version.stat.version }}.alias.drushrc.php] *** 
+ok: [zz_test]
+ok: [zz_live]
+
+TASK: [pull-full-copy | Fix permissions on source] **************************** 
+changed: [zz_live]
+changed: [zz_test]
+
+TASK: [pull-full-copy | If local exists fix permissions on local] ************* 
+changed: [zz_test -> 127.0.0.1]
+changed: [zz_live -> 127.0.0.1]
+
+TASK: [pull-full-copy | Fetch fresh drupal] *********************************** 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Create alias file] ************************************ 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Create sites/all/drush] ******************************* 
+ok: [zz_test -> 127.0.0.1]
+changed: [zz_live -> 127.0.0.1]
+
+TASK: [pull-full-copy | Fetch alias to local site] **************************** 
+ok: [zz_test]
+ok: [zz_live]
+
+TASK: [pull-full-copy | Fetch alias to ~/.drush] ****************************** 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Full fs sync from source to local] ******************** 
+changed: [zz_live -> 127.0.0.1]
+ok: [zz_test -> 127.0.0.1]
+
+TASK: [pull-full-copy | Get local DB details] ********************************* 
+ok: [zz_test -> 127.0.0.1]
+ok: [zz_live -> 127.0.0.1]
+
+TASK: [pull-full-copy | Create db] ******************************************** 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Create db user] *************************************** 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Database sync from source to local] ******************* 
+skipping: [zz_live]
+skipping: [zz_test]
+
+TASK: [pull-full-copy | Set robots.txt to no follow] ************************** 
+changed: [zz_live -> 127.0.0.1]
+changed: [zz_test -> 127.0.0.1]
+
+TASK: [pull-full-copy | Re-fix permissions on local] ************************** 
+changed: [zz_test -> 127.0.0.1]
+changed: [zz_live -> 127.0.0.1]

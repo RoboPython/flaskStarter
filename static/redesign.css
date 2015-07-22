@@ -90,3 +90,28 @@ a {
 
 }
 
+.changed{
+	color:#aaaa00;
+}
+
+.success{
+	color:#00cc00;
+}
+
+.failed{
+	color:#ff0000;
+}
+
+.skipped{
+	color:#0099ff;
+}
+
+.unreachable{
+	color:#000000;
+}
+
+.fail-border{
+	border-color:#ff0000;
+	border-width:2px;
+	border-style:solid;
+}
