@@ -48,7 +48,7 @@ def task_parser(string_value,brandcode):
 @app.route('/')
 def redesign():
     f = open('filetree.txt','r')
-    filetree_cache = f.read()
+    filetree_cache = f.read().strip()
     f.close()
     return render_template('index.html', data = filetree_cache)
 
@@ -84,7 +84,8 @@ def getFiletree():
                             },
                             "meta":{
                                 "tasks":tasks
-                            }
+                            },
+                            "code":code
         }
         
         returnObj[code] = filetree_data
@@ -116,11 +117,18 @@ ansible-playbook pull-full-copy.yml \
 @app.route('/localCopy',methods=['GET'])
 def localCopy():
     print 'doing my thing'
+
+    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':'cuffhattieslipper'}
+    if request.args['withdb'] == 'true':
+        extra_vars['withdb'] = 'true'
+        print 'withdb was true'
+
+
     results =  neonAnsible.Playbook(folder_path='/home/vagrant/ansible/ntdr-pas/playbooks',
                    playbook='pull-full-copy.yml',
-                   limit = 'zz_test',
+                   limit = request.args['code']+'_'+request.args['serverType'],
                    host_list='cottage-servers',
-                   extra_vars={'source':'/var/www/zz_0.0','local':request.args['path'],'mysql_root_pw':'cuffhattieslipper'})
+                   extra_vars= extra_vars)
 
     return json.dumps(results)
     

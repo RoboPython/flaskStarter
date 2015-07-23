@@ -3,6 +3,7 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 	console.log('save')	
  	$scope.filetree = sharedProps.filetreeData;
 	$scope.brandCodeSelected ='zz';
+	$scope.serverTypeSelected = 'test'
 	$scope.tick = "http://i.imgur.com/ATfTAaB.png" ;
 	$scope.cross = "http://i.imgur.com/PZvHtcx.png";
 	$scope.version = {"live":"","test":""};            
@@ -12,7 +13,7 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 										 'loaded':false, 
 										 'brandCode':null,
 										 'path':'/var/www',
-										 'results':null
+										 'data':sharedProps.filetreeData,
 										 },
 
  						'pushFix':{'loading':false,
@@ -37,7 +38,8 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
  						'localCopy':{
 										 'loading':false,
 										 'loaded':false,
-										 'destination':'/var/tmp'
+										 'local':'/var/tmp',
+										 'withdb':false
 										  },
 
  						'updateCopy':{
@@ -52,16 +54,8 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 										 
 										},
 	};
-
-	$scope.server_data ={
-		'br':{},
-		'ch':{},
-		'ly':{},
-		'fbm':{},
-		'wl':{},
-		'zz':{}
-	}
-
+	
+	$scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
 
 	$scope.adminTab = 'active';
 	$scope.developerTab = '';
@@ -90,26 +84,39 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 	$scope.getFiletree = function(brand_code){
 		$http.get('/getFiletree?code='+brand_code).
 			success(function(data,status,headers,config){
-				$scope.server_data[brand_code].filetree = data.data;
+				$scope.controlList.listVersions.data = data;
+				console.log('success')
 			}).
 			error(function(data,status,headers,config){
 				console.log('we messed up');
 			});
 	};
 
-	$scope.localCopy  = function(brand_code,path){
-		$scope.controlList.localCopy.loading = true;
-		$scope.controlList.localCopy.loaded = false;
-		$http.get('/localCopy?code='+brand_code+'&path='+path).
-			success(function(data,status,headers,config){
-				console.log('success');
-				$scope.controlList.localCopy.loading = false;
-				$scope.controlList.localCopy.loaded = true;
-				$scope.controlList.localCopy.data = data;
-			}).
-			error(function(data,status,headers,config){
-				console.log('failure')
-			});
+	$scope.localCopy  = function(brand_code,local,source,server_type,withdb){
+
+		if (server_type != 'all'){
+			$scope.controlList.localCopy.loading = true;
+			$scope.controlList.localCopy.loaded = false;
+			console.log(brand_code);
+			console.log(local);
+			console.log(source);
+			console.log(withdb);
+			$http.get('/localCopy?code='+brand_code+'&local='+local+'&source='+source+'&serverType='+server_type+'&withdb='+withdb).
+				success(function(data,status,headers,config){
+					console.log('success');
+					console.log(data);
+					$scope.controlList.localCopy.loading = false;
+					$scope.controlList.localCopy.loaded = true;
+					$scope.controlList.localCopy.data = data;
+				}).
+				error(function(data,status,headers,config){
+					console.log('failure')
+				});
+		};
+	};
+
+	$scope.printer = function(arg){
+		console.log(arg)
 	};
 
 
