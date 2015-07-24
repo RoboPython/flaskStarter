@@ -118,7 +118,7 @@ ansible-playbook pull-full-copy.yml \
 def localCopy():
     print 'doing my thing'
 
-    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':'cuffhattieslipper'}
+    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':'INSERT YOUR ROOT PASSWORD HERE'}
     if request.args['withdb'] == 'true':
         extra_vars['withdb'] = 'true'
         print 'withdb was true'

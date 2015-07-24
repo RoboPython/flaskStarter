@@ -1,0 +1,7 @@
+>> Switching between serverTypeSelected options adds a blank one option at the top of the source drop down
+
+
+>> "Error: $scope.controlList.listVersions.data[$scope.brandCodeSelected] is undefined appears as an error occiasonally have yet to track down why, an app restart fixes it
+
+
+>> Pulling a local copy with DB fails

@@ -74,7 +74,7 @@ def Playbook(folder_path=None,
                 basic_command += ' '+key+'='+extra_vars[key]
         playbook_command[0] += basic_command+'"'
     
-    
+    print playbook_command 
     playbookResult  = subprocess.check_output(playbook_command,shell=True)
     return playbook_parser(playbookResult)
     

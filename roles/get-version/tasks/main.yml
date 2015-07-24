@@ -1,4 +1,0 @@
----
-  - name: Get source version
-    ntdr_get_version.py: path={{ source }}
-    register: source_version
