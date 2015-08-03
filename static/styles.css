@@ -41,6 +41,23 @@ a {
 	padding-top: 9px;
 }
 
+div.expandable {
+	display: none;
+}
+
+div.node-list {
+	margin-top: 20px;
+	border: 1px solid #000000;
+}
+
+div.node-list li {
+	list-style: none;
+	margin: 5px;
+}
+
+ul.inner {
+	padding-left: 50px;
+}
 
 .taskbar{
 	border-width: 2px;

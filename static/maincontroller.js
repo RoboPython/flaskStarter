@@ -1,6 +1,10 @@
-angular.module('mainApp').controller('mainController',['$scope','sharedProps','config','$http', function($scope,sharedProps,config,$http) {
-
-	console.log('save')	
+angular.module('mainApp').controller('mainController',[
+	'$scope',
+	'sharedProps',
+	'config',
+	'$http', 
+	'$sce', 
+	function($scope, sharedProps, config, $http, $sce) {
  	$scope.filetree = sharedProps.filetreeData;
 	$scope.brandCodeSelected ='zz';
 	$scope.serverTypeSelected = 'test'
@@ -13,7 +17,8 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 										 'loaded':false, 
 										 'brandCode':null,
 										 'path':'/var/www',
-										 'data':sharedProps.filetreeData,
+										 'data':$scope.filetree,
+										 'parsedData': ''
 										 },
 
  						'pushFix':{'loading':false,
@@ -80,19 +85,41 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 	$scope.expandTask = function(task){
 		$scope.activeTab = task;
 	};
-	
+
+
 	$scope.getFiletree = function(brand_code){
 		$http.get('/getFiletree?code='+brand_code).
 			success(function(data,status,headers,config){
-				$scope.controlList.listVersions.data = data;
-				console.log('success')
+				$scope.filetree = data;
+				$scope.generateFileTree(data);
+				console.log('success');
 			}).
 			error(function(data,status,headers,config){
 				console.log('we messed up');
 			});
 	};
 
-	$scope.localCopy  = function(brand_code,local,source,server_type,withdb){
+	$scope.generateFileTree = function(filetreeData) {
+		$scope.filetree = filetreeData;
+		unjsonify(filetreeData, { jump: false }, ["meta"], function(parsedFiletreeData){
+            $scope.controlList.listVersions.parsedData = parsedFiletreeData;
+    	});
+
+	};
+
+	$scope.outputHtml = function(html) {
+		return $sce.trustAsHtml(html);
+	};
+
+	$scope.init = function() {
+		$scope.generateFileTree($scope.filetree);
+	};
+
+	$scope.expandChild = function(e) {
+		jQuery(e.target).parent().children('div').toggle();
+	};
+
+	$scope.localCopy  = function(brand_code, local, source,server_type, withdb){
 
 		if (server_type != 'all'){
 			$scope.controlList.localCopy.loading = true;
@@ -120,4 +147,17 @@ angular.module('mainApp').controller('mainController',['$scope','sharedProps','c
 	};
 
 
+}]).directive('compile', ['$compile', function ($compile) {
+	//A directive which allows us to include html and compile it using angular (replaces the deprecated ng-bind-html-unsafe)
+    return function(scope, element, attrs) {
+      scope.$watch(
+        function(scope) {
+          return scope.$eval(attrs.compile);
+        },
+        function(value) {
+          element.html(value);
+          $compile(element.contents())(scope);
+        }
+    );
+  };
 }]);
