@@ -8,7 +8,7 @@ import json
 import subprocess
 import random
 import os
-import neonAnsible
+import old.oldapi
 
 app = Flask(__name__)
 Triangle(app)
@@ -17,8 +17,11 @@ Triangle(app)
 config = open('pythonConfig.txt','r')
 config = json.loads(config.read())
 
-PATH_TO_ANSIBLE = config['path_to_ansible']    
-PATH_PYTHON_APP = config['path_python_app']
+PATH_TO_ANSIBLE = config['path_to_ansible'].replace("'u","")
+PATH_PYTHON_APP = config['path_python_app'].replace("'u","")
+MYSQL_ROOT_PW = config['mysql_root_pw'].replace("'u","")
+PATH_TO_CACHE = config['path_python_app'].replace("'u","") + 'cache/'
+
 
 app.debug = True
 
@@ -47,7 +50,7 @@ def task_parser(string_value,brandcode):
 
 @app.route('/')
 def redesign():
-    f = open('filetree.txt','r')
+    f = open(PATH_TO_CACHE+'filetree.cache','r')
     filetree_cache = f.read().strip()
     f.close()
     return render_template('index.html', data = filetree_cache)
@@ -118,13 +121,13 @@ ansible-playbook pull-full-copy.yml \
 def localCopy():
     print 'doing my thing'
 
-    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':'INSERT YOUR ROOT PASSWORD HERE'}
+    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':MYSQL_ROOT_PW}
     if request.args['withdb'] == 'true':
         extra_vars['withdb'] = 'true'
         print 'withdb was true'
 
 
-    results =  neonAnsible.Playbook(folder_path='/home/vagrant/ansible/ntdr-pas/playbooks',
+    results =  old.oldapi.Playbook(folder_path='/home/vagrant/ansible/ntdr-pas/playbooks',
                    playbook='pull-full-copy.yml',
                    limit = request.args['code']+'_'+request.args['serverType'],
                    host_list='cottage-servers',
