@@ -1,236 +1,38 @@
-<html ng-app='mainApp' ng-controller='mainController'>
-	<head>
-		<link rel="stylesheet" type="text/css" href="/static/bootstrap.css"/>
-		<link rel="stylesheet" type="text/css" href="/static/redesign.css"/>
-		<script src="/static/angular.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="/static/bootstrap.min.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'/>
-		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'/>
-		<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
-		<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'/>
-	</head>
-	<body>
-		<div class='row header-bar'>
-			<div class='col-md-12'>
-           		<img src="http://i.imgur.com/MK59sXc.png?2">
-			</div>
-		</div>
+{% include 'header.html' %}
 		<div class='row'>
-			<div class='col-md-2 sidebar'>
-				<div class='row sidebar-item' ng-click='expandTask("listVersions")'>
-					<h4>See Versions</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("pushFix")'  >
-					<h4>Push code fix to RC for approval</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("switchTestingLatest")' >
-					<h4>Switch Latest and Testing Sites</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("releaseApproved")' >
-					<h4>Released approved site from RC</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("rollBack")'  >
-					<h4>Roll back live site</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("localCopy")'  >
-					<h4>Pull a local copy of live Site</h4>
-				</div>
-				<div class='row sidebar-item'  ng-click='expandTask("updateCopy")'>
-					<h4>Update Copy from Live</h4>
-				</div>
-				<div class='row sidebar-item' ng-click='expandTask("freshenRemote")' >
-					<h4>Update RC from live</h4>
-				</div>
-			</div>
+			
+			<!-- Sidebar -->
+			{% include 'sidebar.html' %}
+			
 			<div class='col-md-10'>
-				<div class='row info-bar'>
-					<div class='col-md-4 form-inline' role='form'>
-						<h2>
-							Server Group Selected:
-							<select ng-model='brandCodeSelected'>
-								<option value='br'>BR</option>
-								<option value='ch'>CH</option>
-								<option value='ly'>LY</option>
-								<option value='fbm'>FBM</option>
-								<option value='wl'>WL</option>
-								<option value='zz'>ZZ</option>
-							</select>
-						</h2>
-					</div>
-					<div class='col-md-4 form-inline' role='form'>
-						<h2>
-							Server Type:
-							<select ng-model='serverTypeSelected'>
-								<option value='test'>Test</option>
-								<option value='live'>Live</option>
-								<option value='all'>All</option>
-							</select>
-						</h2>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "listVersions"'>
-					<div class='col-md-12'>
-						<div class='row'>
-							<div class='col-md-6 col-md-offset-1'>
-								<br>
-								<h2> File Tree with available versions for the currently selected server group</h2>
-								<button ng-click='getFiletree(brandCodeSelected)' class="btn btn-default btn-lg" >Check for updates to file tree</button>
-								<h3>Displaying Json in html tricky. Can wait for interns</h3>
-								<p>{{controlList.listVersions.data | angular}}</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "pushFix"'>
-					<div class='col-md-12'>
-						<p>expanded2</p>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "switchTestingLatest"'>
-					<div class='col-md-12'>
-						<p>coming soon</p>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "releaseApproved"'>
-					<div class='col-md-12'>
-						<p>release approved</p>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "rollBack"'>
-					<div class='col-md-12'>
-						<p>roll back</p>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "localCopy"'>
-					<div class='col-md-6'>
-						<div class='row'>
-							<div class='col-md-10 col-md-offset-1'>
-								<h2> Pull a Local Copy </h2>
-							</div>
-						</div>
-						<br>
 
-						<div class='row'>
-							<div class='col-md-3 col-md-offset-1'>
-								<p>Local Directory to save in:</p>
-							</div>
-							<div class='col-md-3'>
-								<input type='text' ng-model='controlList.localCopy.local'>
-							</div>
-						</div>
+			<!-- Info bar -->
+			{% include 'infobar.html' %}
 
-						<br>
-						<div class='row'>
-							<div class='col-md-3 col-md-offset-1'>
-								<p>Select remote folder to pull:</p>
-							</div>
-							<div class='col-md-3'>
-								<select ng-init='controlList.localCopy.source = controlList.listVersions.data[brandCodeSelected].data[serverTypeSelected].flat[0]' ng-model='controlList.localCopy.source' ng-options='path.name for path in controlList.listVersions.data[brandCodeSelected].data[serverTypeSelected].flat'></select>
-							</div>
-						</div>
-						<br>
-						<div class = 'row'>
-							<div class='col-md-11 col-md-offset-1'>
-								<input type="checkbox" ng-model='controlList.localCopy.withdb'>Create new DB?<br>
-							</div>
-						</div>
-						<br>
-						<div class='row'>
-							<div class='col-md-11 col-md-offset-1'>
-								<button ng-click='localCopy(brandCodeSelected,controlList.localCopy.local,controlList.localCopy.source.name,serverTypeSelected,controlList.localCopy.withdb)' class="btn btn-default btn-lg" >Pull Local Copy</button>
-							</div>
-						</div>
-					</div>
-					<div class='col-md-6'>
-						<div class='row'>
-							<div class='col-md-12'>
-								<div ng-show='controlList.localCopy.loading'>
-									<div class='row'>
-										<div class='col-md-12'>
-											<br>
-										</div>
-									</div>
-									<div class='row'>
-										<div class='col-md-12'>
-											<br>
-										</div>
-									</div>
-									<div class='row'>
-										<div class='col-md-12'>
-											<br>
-										</div>
-									</div>
-									<div class='row'>
-										<div class='col-md-12'>
-											<br>
-										</div>
-									</div>	
-									<div class='row'>
-										<div class='col-md-3 col-md-offset-3'>
-											<img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'/>	
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='row' ng-show='controlList.localCopy.loaded'>
-							<div class='col-md-10 col-md-offset-1'>
-								<div ng-repeat='server in controlList.localCopy.data.tasks'>
-									<h3>{{server.name | angular }}</h3>
-									<div ng-repeat='task in server.task'>
-										<br>
-										<div class='taskbar'>
-											<p>{{task.name | angular}}</p>
-											<div ng-if='task.status == "ok"'>
-												<p>Status: <span class='success'>{{task.status | angular}}</span></p>
-											</div>
-											<div ng-if='task.status == "changed"'>
-												<p>Status: <span class='changed'>{{task.status | angular}}</span></p>
-											</div>
-											<div ng-if='task.status == "failed"'>
-												<p>Status: <span class='failed'>{{task.status | angular}}</span></p>
-											</div>
-											<div ng-if='task.status == "unreachable"'>
-												<p>Status: <span class='unreachable'>{{task.status | angular}}</span></p>
-											</div>
-											<div ng-if='task.status == "skipping"'>
-												<p>Status: <span class='skipped'>{{task.status | angular}}</span></p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				</div>
-				<div class='row' ng-show='activeTab == "updateCopy"'>
-					<div class='col-md-12'>
-						<p>update copy</p>
-					</div>
-				</div>
-				<div class='row' ng-show='activeTab == "freshenRemote"'>
-					<div class='col-md-12'>
-						<p>freshen remote</p>
-					</div>
-				</div>
+				<!-- Versions tab -->
+				{% include 'versions.html' %}
+				
+				<!-- PushFix tab -->
+				{% include 'pushfix.html' %}
 
+				<!-- Latest / Testing Sites tab -->
+				{% include 'testinglatest.html' %}
 
+				<!-- Release approved tab -->
+				{% include 'releaseapprvd.html' %}
+				
+				<!-- Rollback tab -->
+				{% include 'rollback.html' %}
 
+				<!-- Pull Local copy tab -->
+				{% include 'localcopy.html' %}
+				
+				<!-- Update local copy tab (from live) -->
+				{% include 'updlocalcopy.html' %}
+
+				<!--Update RC tab (from live) -->
+				{% include 'updrc.html' %}
 
 			</div>
 		</div>
-	</body>
-	<script>
-		var app = angular.module('mainApp', [])
-			.service('sharedProps',function(){
-				return{
-					filetreeData:JSON.parse('{{data | safe}}'),
-				};
-			});	
-	</script>
-	<script src="/static/angularConfig.js"></script>
-	<script src="/static/maincontroller.js"></script>
-</html>
-
+{% include 'footer.html' %}

@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import render_template
+from flask.ext.socketio import SocketIO, emit
 from flask import request
+
 from flask.ext.triangle import Triangle
 
 import re
@@ -12,7 +14,7 @@ import old.oldapi
 
 app = Flask(__name__)
 Triangle(app)
-
+socketio = SocketIO(app)
 
 config = open('pythonConfig.txt','r')
 config = json.loads(config.read())
@@ -25,9 +27,14 @@ PATH_TO_CACHE = config['path_python_app'].replace("'u","") + 'cache/'
 
 app.debug = True
 
+#Socketio test
+
+@socketio.on('connect', namespace='/serv')
+def handle_connection():
+    print 'connection initialized'
 
 
-def task_parser(string_value,brandcode): 
+def task_parser(string_value, brandcode): 
     string_value = re.split('\n\s*\n', string_value)  
     
     tempArray = []
@@ -47,6 +54,7 @@ def task_parser(string_value,brandcode):
     return tempArray
 
 
+#Routes
 
 @app.route('/')
 def redesign():
@@ -54,10 +62,6 @@ def redesign():
     filetree_cache = f.read().strip()
     f.close()
     return render_template('index.html', data = filetree_cache)
-
-
-
-
 
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
@@ -99,15 +103,7 @@ def getFiletree():
     f = open(PATH_PYTHON_APP+'filetree.txt','w')
     f.write(returnObj)
     f.close()
-
-
-
-
     return returnObj
-
-
-
-
 
 
 '''
@@ -138,4 +134,6 @@ def localCopy():
 
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app, '127.0.0.1', 5000)
+    #app.run('127.0.0.1', 5000)
+    
