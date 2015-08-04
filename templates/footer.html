@@ -1,0 +1,19 @@
+	</body>
+	<script src="/static/lib/parsejson.js"></script>
+
+	<script src="/static/app.js"></script>
+	
+	<script>
+		mainApp.service('sharedProps', function() {
+			return {
+				filetreeData: JSON.parse({{data | tojson | safe}}),
+			};
+		});
+	</script>
+	
+	<script src="/static/services/services.js"></script>
+	
+	<script src="/static/controllers/controllers.js"></script>
+	
+	<script src="/static/controllers/maincontroller.js"></script>
+</html>
