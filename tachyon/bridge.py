@@ -5,8 +5,8 @@ from ansible import utils # TODO - check if needed
 
 from tachyon.emitter_callbacks import EmitterCallbacks
 
-def run_playbook(playbook_path, inventory_path, event_callback=None):
-    callbacks_object = EmitterCallbacks(None)
+def run_playbook(playbook_path, inventory_path, event_callback):
+    callbacks_object = EmitterCallbacks(event_callback)
     stats = callbacks.AggregateStats()
     pb = PlayBook(
         playbook=playbook_path,

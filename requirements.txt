@@ -1,3 +1,4 @@
 Flask-Triangle
 Flask
 Flask-SocketIO
+Flask-Scss

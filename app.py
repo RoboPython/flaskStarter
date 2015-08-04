@@ -4,6 +4,8 @@ from flask.ext.socketio import SocketIO, emit
 from flask import request
 
 from flask.ext.triangle import Triangle
+from flask.ext.scss import Scss
+from tachyon import bridge
 
 import re
 import json
@@ -12,17 +14,21 @@ import random
 import os
 import old.oldapi
 
+
+
 app = Flask(__name__)
+
 Triangle(app)
 socketio = SocketIO(app)
+scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('pythonConfig.txt','r')
 config = json.loads(config.read())
 
-PATH_TO_ANSIBLE = config['path_to_ansible'].replace("'u","")
-PATH_PYTHON_APP = config['path_python_app'].replace("'u","")
-MYSQL_ROOT_PW = config['mysql_root_pw'].replace("'u","")
-PATH_TO_CACHE = config['path_python_app'].replace("'u","") + 'cache/'
+PATH_TO_ANSIBLE = config['path_to_ansible']
+PATH_PYTHON_APP = config['path_python_app']
+MYSQL_ROOT_PW = config['mysql_root_pw']
+PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 
 
 app.debug = True
@@ -106,6 +112,7 @@ def getFiletree():
     return returnObj
 
 
+# def run_playbook(playbook_path, inventory_path, event_callback=None):
 '''
 ansible-playbook pull-full-copy.yml \
           -i inventory/cottage-servers \
@@ -115,21 +122,11 @@ ansible-playbook pull-full-copy.yml \
 
 @app.route('/localCopy',methods=['GET'])
 def localCopy():
-    print 'doing my thing'
-
-    extra_vars={'source':'/var/www' + request.args['source'],'local':request.args['local'],'mysql_root_pw':MYSQL_ROOT_PW}
-    if request.args['withdb'] == 'true':
-        extra_vars['withdb'] = 'true'
-        print 'withdb was true'
+    def on_dict(returned_object):
+        print returned_object
+    bridge.run_playbook(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory', on_dict)
 
 
-    results =  old.oldapi.Playbook(folder_path='/home/vagrant/ansible/ntdr-pas/playbooks',
-                   playbook='pull-full-copy.yml',
-                   limit = request.args['code']+'_'+request.args['serverType'],
-                   host_list='cottage-servers',
-                   extra_vars= extra_vars)
-
-    return json.dumps(results)
     
 
 

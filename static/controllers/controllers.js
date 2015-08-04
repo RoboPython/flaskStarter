@@ -28,7 +28,7 @@ controllers.controller('versions', [
         };
 
         $scope.parseFileTree = function(filetreeData) {
-            parseJson.unjsonify($rootScope.filetree, ["meta"]).then(function(data) {
+            parseJson.unjsonify($rootScope.filetree, ["meta", "flat"]).then(function(data) {
                 $scope.controlList.listVersions.parsedData = data;
             }, function(err) {
                 console.log("Fail:" + err);
