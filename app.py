@@ -19,6 +19,8 @@ import threading
 app = Flask(__name__)
 app.debug = True
 
+app.debug = True
+
 Triangle(app)
 scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
@@ -124,6 +126,9 @@ def localCopy():
             for callback_json in iter(callback_queue.get,None):
                 print callback_json
                 yield "data: %s\n\n" %json.dumps(callback_json)
+                if callback_json['event'] == 'finished':
+                    break
+
         
         
         return Response(events(), content_type='text/event-stream')

@@ -1,0 +1,123 @@
+h1 {
+    font-weight: bold;
+    font-family: 'Oswald', cursive;
+    font-size: 40px;
+}
+
+h2 {
+    font-weight: bold;
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 25px;
+    padding: 0px;
+    margin: 0px;
+}
+
+p {
+    font-family: 'Play', sans-serif;
+    font-size: 15px;
+}
+
+a {
+    font-family: 'Play', sans-serif;
+    font-size: 15px;
+}
+
+.tick-img {
+    width: 50px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+div {
+	&[role='contain'] {
+		border-top: 2px solid #0066ff;
+		
+		padding: 20px;
+	}
+
+    &.expandable {
+        display: none;
+    }
+    &.node-list {
+        margin-top: 20px;
+        border: 1px solid #000000;
+        li {
+            list-style: none;
+            margin: 5px;
+            ul.inner {
+    			padding-left: 50px;
+			}
+        }
+    }
+}
+
+.taskbar {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #bbbbbb;
+    background-color: #dddddd;
+}
+
+.header-bar {
+    padding: 0px;
+    background-color: #dddddd;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #b2d1ff;
+    background: url(http://i.imgur.com/RgvoVMU.png) repeat 0 0 fixed;
+}
+
+.info-bar {
+    padding: 0px;
+    background-color: #dddddd;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #b2d1ff;
+}
+
+.sidebar {
+    height: 100%;
+    background-color: #0066ff;
+}
+
+.sidebar-item {
+    color: #ffffff;
+    background-color: #0066ff;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #b2d1ff;
+}
+
+.sidebar-item:hover {
+    color: #0066ff;
+    background-color: #b2d1ff;
+}
+
+.changed {
+    color: #aaaa00;
+}
+
+.success {
+    color: #00cc00;
+}
+
+.failed {
+    color: #ff0000;
+}
+
+.skipped {
+    color: #0099ff;
+}
+
+.unreachable {
+    color: #000000;
+}
+
+.fail-border {
+    border-color: #ff0000;
+    border-width: 2px;
+    border-style: solid;
+}

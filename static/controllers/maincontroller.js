@@ -7,9 +7,6 @@ controllers.controller('mainController', [
     'ajaxOperations',
     'parseJson',
     function($rootScope, $scope, $http, $sce, sharedProps, ajaxOperations, parseJson) {
-        //Socketio config
-        $scope.testSocket = io.connect('http://127.0.0.1:5000/serv');
-
         //Variables local to page
         $rootScope.filetree = sharedProps.filetreeData;
         $scope.brandCodeSelected = 'zz';

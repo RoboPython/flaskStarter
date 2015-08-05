@@ -150,3 +150,6 @@ class EmitterCallbacks:
         return_dict = {"event":"stats","stats":stats}
         self.emitter(return_dict)
 
+    def on_complete(self):
+        return_dict = {"event":"finished"}
+        self.emitter(return_dict)
