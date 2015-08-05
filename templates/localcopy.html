@@ -68,8 +68,6 @@
 			</div>
 		</div>
 	</div>
-
-
 	<div class='row'>
 		<div class='col-md-10 col-md-offset-2'>
 			<div ng-repeat='server in tasks'>
@@ -77,14 +75,24 @@
 				<div ng-repeat='task in server.tasks'>
 					<br>
 					<div class='taskbar'>
-						<p>{{task.name | angular}}</p>
-						<div ng-if='task.event == "ok"'>
-							<p>Status: <span class='success'>{{task.name | angular}}</span></p>
+						<div ng-if='task.event == "ok"' class="row row-centered">
+							<div class="col-md-12 col-centered">
+								<b class="status-text">Status: <span class='success'>{{task.event | angular}}</span></b>
+								<div class="details-expand">
+									<div ng-click="showDetails($event)" class="btn btn-primary btn-xs show-details">
+										Details
+									</div>
+									<div class="details">
+										<b>{{task.name | angular}}</b>
+									</div>
+								</div>
+							</div>
+							
 						</div>
 						<div ng-if='task.event !== "ok"'>
-							<p>Status: <span class='changed'>{{task.name | angular}}  {{task.event | angular}}</span></p>
+							<p>Status: <span class='changed'>{{task.event | angular}}</span></p>
 						</div>
-<!-- 						<div ng-if='task.event == "failed"'>
+						<!-- 						<div ng-if='task.event == "failed"'>
 							<p>Status: <span class='failed'>{{task.name | angular}}</span></p>
 						</div>
 						<div ng-if='task.event == "unreachable"'>

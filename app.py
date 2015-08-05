@@ -12,7 +12,7 @@ import re
 import json
 import random
 import os
-import old.oldapi
+#import old.oldapi
 import Queue 
 import threading 
 
