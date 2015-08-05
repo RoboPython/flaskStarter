@@ -1,4 +1,4 @@
-pythonConfig.txt
+config.json
 cache/*
 
 #Ignore Vim
