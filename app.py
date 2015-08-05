@@ -21,7 +21,7 @@ app.debug = True
 Triangle(app)
 scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
-config = open('config.json','r')
+config = open('config/config.json','r')
 config = json.loads(config.read())
 
 PATH_TO_ANSIBLE = config['path_to_ansible']
