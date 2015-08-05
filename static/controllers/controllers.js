@@ -13,6 +13,7 @@ controllers.controller('versions', [
 
         $scope.init = function() {
             $scope.parseFileTree($rootScope.filetree);
+
         };
 
         $scope.getFiletree = function(brand_code) {
@@ -41,25 +42,61 @@ controllers.controller('pullcopylocal', [
     '$rootScope',
     '$scope',
     'ajaxOperations',
-    function($rootScope, $scope, ajaxOperations) {
+    'eventSource',
+    function($rootScope, $scope, ajaxOperations, eventSource) {
         $scope.init = function() {
+            $scope.code = "";
+            $scope.tasks = {
+                
+            };
+        };
 
+        $scope.messageHandler = function(msg) {
+            //Close connection when finished event recieved.
+            if (msg.event == "finished") {
+                this.close();
+                return;
+            };
+            
+            console.log(msg);
+            $scope.tasks[$scope.code].tasks.push(msg);
+            $scope.$apply()
+                        
+
+            console.log("Message: ", msg);
+        };
+
+        $scope.errorHandler = function(err) {
+            if (err) {
+                console.log("Error: ", err);
+            }
+
+            return null;
+        };
+
+        $scope.statusHandler = function(status) {
+            if (status) {
+                console.log("Status: ", status);
+            }
+            return null;
         };
 
         $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
-            if (server_type != 'all') {
-                $scope.controlList.localCopy.loading = true;
-                $scope.controlList.localCopy.loaded = false;
-                ajaxOperations.localCopy(brand_code, local, source, server_type, withdb).
-                success(function(data, status, headers) {
-                    $scope.controlList.localCopy.loading = false;
-                    $scope.controlList.localCopy.loaded = true;
-                    $scope.controlList.localCopy.data = data;
-                }).
-                error(function(data, status, headers) {
-                    console.log('failure')
-                });
+            var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
+            var events = eventSource.init(requestString);
+            $scope.code = brand_code;
+
+            $scope.tasks[$scope.code] = {
+                status: "ok",
+                name: $scope.code,
+                tasks: []
             };
+
+            events.registerHandler('msg', $scope.messageHandler);
+            events.registerHandler('err', $scope.errorHandler);
+            events.registerHandler('status', $scope.statusHandler);
+
+
         };
     }
 ]);

@@ -1,7 +1,7 @@
-<div class='row' ng-show='activeTab == "localCopy"' ng-controller='pullcopylocal' data-ng-init='init()'>
-	<div class='col-md-6'>
+<div class='row' role="contain" ng-show='activeTab == "localCopy"' ng-controller='pullcopylocal' data-ng-init='init()'>
+	<div class='col-md-12'>
 		<div class='row'>
-			<div class='col-md-10 col-md-offset-1'>
+			<div class='col-md-6 col-md-offset-1'>
 				<h2> Pull a Local Copy </h2>
 			</div>
 		</div>
@@ -62,35 +62,37 @@
 				</div>
 				<div class='row'>
 					<div class='col-md-3 col-md-offset-3'>
-						<!--<img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'/>	-->
+						<img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'/>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class='row' ng-show='controlList.localCopy.loaded'>
-		<div class='col-md-10 col-md-offset-1'>
-			<div ng-repeat='server in controlList.localCopy.data.tasks'>
+
+
+	<div class='row'>
+		<div class='col-md-10 col-md-offset-2'>
+			<div ng-repeat='server in tasks'>
 				<h3>{{server.name | angular }}</h3>
-				<div ng-repeat='task in server.task'>
+				<div ng-repeat='task in server.tasks'>
 					<br>
 					<div class='taskbar'>
 						<p>{{task.name | angular}}</p>
-						<div ng-if='task.status == "ok"'>
-							<p>Status: <span class='success'>{{task.status | angular}}</span></p>
+						<div ng-if='task.event == "ok"'>
+							<p>Status: <span class='success'>{{task.name | angular}}</span></p>
 						</div>
-						<div ng-if='task.status == "changed"'>
-							<p>Status: <span class='changed'>{{task.status | angular}}</span></p>
+						<div ng-if='task.event !== "ok"'>
+							<p>Status: <span class='changed'>{{task.name | angular}}  {{task.event | angular}}</span></p>
 						</div>
-						<div ng-if='task.status == "failed"'>
-							<p>Status: <span class='failed'>{{task.status | angular}}</span></p>
+<!-- 						<div ng-if='task.event == "failed"'>
+							<p>Status: <span class='failed'>{{task.name | angular}}</span></p>
 						</div>
-						<div ng-if='task.status == "unreachable"'>
-							<p>Status: <span class='unreachable'>{{task.status | angular}}</span></p>
+						<div ng-if='task.event == "unreachable"'>
+							<p>Status: <span class='unreachable'>{{task.name | angular}}</span></p>
 						</div>
-						<div ng-if='task.status == "skipping"'>
-							<p>Status: <span class='skipped'>{{task.status | angular}}</span></p>
-						</div>
+						<div ng-if='task.event == "skipping"'>
+							<p>Status: <span class='skipped'>{{task.name | angular}}</span></p>
+						</div> -->
 					</div>
 				</div>
 			</div>

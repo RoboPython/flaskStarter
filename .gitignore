@@ -1,1 +1,12 @@
 pythonConfig.txt
+cache/*
+
+#Ignore Vim
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+.un~
+ession.vim
+netrwhist
+
+__pycache__/
+ *.py[cod]
