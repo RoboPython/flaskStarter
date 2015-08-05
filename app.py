@@ -14,12 +14,13 @@ import random
 import os
 import old.oldapi
 
-
 app = Flask(__name__)
+
+app.debug = True
 
 Triangle(app)
 #socketio = SocketIO(app)
-scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
+scss = Scss(app, static_dir='static/dep/', asset_dir='assets');
 
 config = open('pythonConfig.txt','r')
 config = json.loads(config.read())
@@ -30,7 +31,6 @@ MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 
 
-app.debug = True
 
 #Socketio test
 
