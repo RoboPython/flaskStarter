@@ -18,4 +18,4 @@ def run_playbook(playbook_path, inventory_path, extra_vars,subset, event_callbac
         subset           =   subset
     )
     results = pb.run()
-    callbacks_object.on_stats(pb.stats)
+#    callbacks_object.on_stats(pb.stats)
