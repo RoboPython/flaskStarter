@@ -13,6 +13,7 @@ controllers.controller('versions', [
 
         $scope.init = function() {
             $scope.parseFileTree($rootScope.filetree);
+
         };
 
         $scope.getFiletree = function(brand_code) {
@@ -44,7 +45,10 @@ controllers.controller('pullcopylocal', [
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
         $scope.init = function() {
-
+            $scope.code = "";
+            $scope.tasks = {
+                
+            };
         };
 
         $scope.messageHandler = function(msg) {
@@ -53,6 +57,12 @@ controllers.controller('pullcopylocal', [
                 this.close();
                 return;
             };
+            
+            console.log(msg);
+            $scope.tasks[$scope.code].tasks.push(msg);
+            $scope.$apply()
+                        
+
             console.log("Message: ", msg);
         };
 
@@ -74,6 +84,14 @@ controllers.controller('pullcopylocal', [
         $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
             var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
             var events = eventSource.init(requestString);
+            $scope.code = brand_code;
+
+            $scope.tasks[$scope.code] = {
+                status: "ok",
+                name: $scope.code,
+                tasks: []
+            };
+
             events.registerHandler('msg', $scope.messageHandler);
             events.registerHandler('err', $scope.errorHandler);
             events.registerHandler('status', $scope.statusHandler);
