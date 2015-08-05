@@ -1,24 +1,25 @@
-import subprocess
 from flask import Flask
 from flask import render_template
-#from flask.ext.socketio import SocketIO, emit
 from flask import request
+from flask import Response
 
 from flask.ext.triangle import Triangle
 from flask.ext.scss import Scss
 from tachyon import bridge
 
+import subprocess
 import re
 import json
 import random
 import os
 import old.oldapi
-
+import Queue 
+import threading 
 
 app = Flask(__name__)
+app.debug = True
 
 Triangle(app)
-#socketio = SocketIO(app)
 scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('pythonConfig.txt','r')
@@ -28,16 +29,6 @@ PATH_TO_ANSIBLE = config['path_to_ansible']
 PATH_PYTHON_APP = config['path_python_app']
 MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
-
-
-app.debug = True
-
-#Socketio test
-
-#@socketio.on('connect', namespace='/serv')
-#def handle_connection():
-#    print 'connection initialized'
-
 
 def task_parser(string_value, brandcode): 
     string_value = re.split('\n\s*\n', string_value)  
@@ -58,15 +49,14 @@ def task_parser(string_value, brandcode):
     
     return tempArray
 
-
-#Routes
-
 @app.route('/')
 def redesign():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
     filetree_cache = f.read().strip()
     f.close()
     return render_template('index.html', data = filetree_cache)
+
+
 
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
@@ -121,15 +111,32 @@ ansible-playbook pull-full-copy.yml \
 
 @app.route('/localCopy',methods=['GET'])
 def localCopy():
-    def on_dict(returned_object):
-        print returned_object
-    bridge.run_playbook(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory',{'mysql_root_pw':MYSQL_ROOT_PW},"zz", on_dict)
+    callback_queue = Queue.Queue()
 
+    def on_dict(returned_object):
+        callback_queue.put(returned_object)
+    
+    playbook_thread = threading.Thread(target=bridge.run_playbook, args=(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory',{'mysql_root_pw':MYSQL_ROOT_PW},"zz", on_dict))
+    playbook_thread.start()
+    
+    if request.headers.get('accept') == 'text/event-stream':
+        def events():
+            for callback_json in iter(callback_queue.get,None):
+                print callback_json
+                yield "data: %s\n\n" %json.dumps(callback_json)
+        
+        
+        return Response(events(), content_type='text/event-stream')
+    else:
+        return 'Just in case the front end messes up its header LOL'
 
     
-
 
 if __name__ == '__main__':
-#    socketio.run(app, '127.0.0.1', 5000)
     app.run('127.0.0.1', 5000)
     
+
+
+
+
+
