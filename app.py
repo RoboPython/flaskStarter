@@ -116,7 +116,15 @@ def localCopy():
     def on_dict(returned_object):
         callback_queue.put(returned_object)
     
-    playbook_thread = threading.Thread(target=bridge.run_playbook, args=(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory',{'mysql_root_pw':MYSQL_ROOT_PW},"zz", on_dict))
+
+    if request.args['serverType']:
+        limit = request.args['code'] +'_'+request.args['serverType']
+    else:
+      return "nope can't accept that as a serverType"
+
+
+
+    playbook_thread = threading.Thread(target=bridge.run_playbook, args=(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory',{'mysql_root_pw':MYSQL_ROOT_PW},limit, on_dict))
     playbook_thread.start()
     
     if request.headers.get('accept') == 'text/event-stream':
