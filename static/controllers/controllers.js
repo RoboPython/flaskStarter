@@ -46,7 +46,11 @@ controllers.controller('pullcopylocal', [
         $scope.init = function() {
             var events = eventSource.init('/');
             events.registerHandler('msg', function(msg) {
-                console.log(msg);
+                var messageObj = JSON.parse(msg);
+                if(messageObj.event == "finished") {
+                    events.close();
+                    console.log("connection close");
+                };
             });
         };
 
