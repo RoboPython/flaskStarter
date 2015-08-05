@@ -15,11 +15,19 @@ h2 {
 p {
     font-family: 'Play', sans-serif;
     font-size: 15px;
+    margin: 0;
 }
 
 a {
     font-family: 'Play', sans-serif;
     font-size: 15px;
+    
+}
+
+b {
+    &.status-text {
+        float: left;
+    }
 }
 
 .tick-img {
@@ -34,6 +42,16 @@ div {
 		
 		padding: 20px;
 	}
+
+    &.details {
+        display: none;
+        width: 100%;
+
+    }
+
+    &.show-details {
+        margin-left: 20px;
+    }
 
     &.expandable {
         display: none;
@@ -50,6 +68,19 @@ div {
         }
     }
 }
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
 
 .taskbar {
     border-width: 2px;

@@ -39,31 +39,29 @@ controllers.controller('versions', [
 ]);
 
 controllers.controller('pullcopylocal', [
+    
     '$rootScope',
     '$scope',
     'ajaxOperations',
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
+        
         $scope.init = function() {
             $scope.code = "";
-            $scope.tasks = {
-                
-            };
+            $scope.running = false;
+            $scope.tasks = {};
         };
 
         $scope.messageHandler = function(msg) {
             //Close connection when finished event recieved.
-            if (msg.event == "finished") {
-                this.close();
-                return;
-            };
-            
             console.log(msg);
             $scope.tasks[$scope.code].tasks.push(msg);
             $scope.$apply()
-                        
 
-            console.log("Message: ", msg);
+            if (msg.event == "finished") {
+                $scope.running = false;
+                this.close();
+            };
         };
 
         $scope.errorHandler = function(err) {
@@ -81,22 +79,28 @@ controllers.controller('pullcopylocal', [
             return null;
         };
 
+        $scope.showDetails = function(e) {
+
+            jQuery(e.target).parent().children('div.details').toggle();
+
+        };
+
         $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
-            var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
-            var events = eventSource.init(requestString);
-            $scope.code = brand_code;
+            if (!$scope.running) {
+                var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
+                var events = eventSource.init(requestString);
+                $scope.code = brand_code;
+                $scope.running = true;
+                $scope.tasks[$scope.code] = {
+                    status: "ok",
+                    name: $scope.code,
+                    tasks: []
+                };
 
-            $scope.tasks[$scope.code] = {
-                status: "ok",
-                name: $scope.code,
-                tasks: []
-            };
-
-            events.registerHandler('msg', $scope.messageHandler);
-            events.registerHandler('err', $scope.errorHandler);
-            events.registerHandler('status', $scope.statusHandler);
-
-
+                events.registerHandler('msg', $scope.messageHandler);
+                events.registerHandler('err', $scope.errorHandler);
+                events.registerHandler('status', $scope.statusHandler);
+            }
         };
     }
 ]);
