@@ -44,17 +44,20 @@ controllers.controller('pullcopylocal', [
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
         $scope.init = function() {
-            var events = eventSource.init('/');
+            
+        };
+
+        $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
+            var events = eventSource.init('/localCopy');
             events.registerHandler('msg', function(msg) {
+                console.log(msg);
                 var messageObj = JSON.parse(msg);
                 if(messageObj.event == "finished") {
                     events.close();
                     console.log("connection close");
                 };
             });
-        };
 
-        $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
             if (server_type != 'all') {
                 $scope.controlList.localCopy.loading = true;
                 $scope.controlList.localCopy.loaded = false;
