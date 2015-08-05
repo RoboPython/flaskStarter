@@ -7,9 +7,9 @@ mainApp.factory('ajaxOperations', [
             return $http.get('/getFiletree?code=' + brand_code);
         };
 
-        AjaxOperations.localCopy = function(brand_code, local, source, server_type, withdb) {
-            return $http.get('/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb);
-        }
+        // AjaxOperations.localCopy = function(brand_code, local, source, server_type, withdb) {
+        //     return $http.get('/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb);
+        // }
 
         return AjaxOperations;
     }
@@ -21,6 +21,7 @@ mainApp.factory('eventSource', [
         var eventSource = {
             init: function(path) {
                 this.context = new EventSource(path);
+
                 this.messageHandlers = [];
                 this.errorHandlers = [];
                 this.statusHandlers = [];
@@ -30,6 +31,9 @@ mainApp.factory('eventSource', [
                 this.context.onerror = this.onError.bind(this);
                 this.context.onmessage = this.onMessage.bind(this);
                 this.context.onopen = this.onOpen.bind(this);
+
+                this.parseData = true;
+
                 return this;
             },
             close: function() {
@@ -42,6 +46,7 @@ mainApp.factory('eventSource', [
                 };
             },
             onMessage: function(message) {
+                (this.parseData) ? message = JSON.parse(message.data) : null;
                 for (var i = 0; i < this.messageHandlers.length; i++) {
                     this.messageHandlers[i].call(this, message);
                 };
@@ -68,6 +73,7 @@ mainApp.factory('eventSource', [
                 };
             }
         };
+
         return eventSource;
     }
 ]);

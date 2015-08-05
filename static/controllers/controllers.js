@@ -44,34 +44,41 @@ controllers.controller('pullcopylocal', [
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
         $scope.init = function() {
-            
+
+        };
+
+        $scope.messageHandler = function(msg) {
+            //Close connection when finished event recieved.
+            if (msg.event == "finished") {
+                this.close();
+                return;
+            };
+            console.log("Message: ", msg);
+        };
+
+        $scope.errorHandler = function(err) {
+            if (err) {
+                console.log("Error: ", err);
+            }
+
+            return null;
+        };
+
+        $scope.statusHandler = function(status) {
+            if (status) {
+                console.log("Status: ", status);
+            }
+            return null;
         };
 
         $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
-            var events = eventSource.init('/localCopy');
-            events.registerHandler('msg', function(msg) {
+            var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
+            var events = eventSource.init(requestString);
+            events.registerHandler('msg', $scope.messageHandler);
+            events.registerHandler('err', $scope.errorHandler);
+            events.registerHandler('status', $scope.statusHandler);
 
-                var messageObj = JSON.parse(msg.data);
-                console.log(messageObj);
-                if(messageObj.event == "finished") {
-                    events.close();
-                    console.log("connection close");
-                };
-            });
 
-            if (server_type != 'all') {
-                $scope.controlList.localCopy.loading = true;
-                $scope.controlList.localCopy.loaded = false;
-                ajaxOperations.localCopy(brand_code, local, source, server_type, withdb).
-                success(function(data, status, headers) {
-                    $scope.controlList.localCopy.loading = false;
-                    $scope.controlList.localCopy.loaded = true;
-                    $scope.controlList.localCopy.data = data;
-                }).
-                error(function(data, status, headers) {
-                    console.log('failure')
-                });
-            };
         };
     }
 ]);

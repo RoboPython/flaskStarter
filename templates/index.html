@@ -1,38 +1,31 @@
 {% include 'header.html' %}
-		<div class='row'>
+<div class='row'>
+	
+	<!-- Sidebar -->
+	{% include 'sidebar.html' %}
+	
+	<div class='col-md-10'>
+		<!-- Info bar -->
+		{% include 'infobar.html' %}
+			<!-- Versions tab -->
+			{% include 'versions.html' %}
 			
-			<!-- Sidebar -->
-			{% include 'sidebar.html' %}
+			<!-- PushFix tab -->
+			{% include 'pushfix.html' %}
+			<!-- Latest / Testing Sites tab -->
+			{% include 'testinglatest.html' %}
+			<!-- Release approved tab -->
+			{% include 'releaseapprvd.html' %}
 			
-			<div class='col-md-10'>
-
-			<!-- Info bar -->
-			{% include 'infobar.html' %}
-
-				<!-- Versions tab -->
-				{% include 'versions.html' %}
-				
-				<!-- PushFix tab -->
-				{% include 'pushfix.html' %}
-
-				<!-- Latest / Testing Sites tab -->
-				{% include 'testinglatest.html' %}
-
-				<!-- Release approved tab -->
-				{% include 'releaseapprvd.html' %}
-				
-				<!-- Rollback tab -->
-				{% include 'rollback.html' %}
-
-				<!-- Pull Local copy tab -->
-				{% include 'localcopy.html' %}
-				
-				<!-- Update local copy tab (from live) -->
-				{% include 'updlocalcopy.html' %}
-
-				<!--Update RC tab (from live) -->
-				{% include 'updrc.html' %}
-
-			</div>
-		</div>
+			<!-- Rollback tab -->
+			{% include 'rollback.html' %}
+			<!-- Pull Local copy tab -->
+			{% include 'localcopy.html' %}
+			
+			<!-- Update local copy tab (from live) -->
+			{% include 'updlocalcopy.html' %}
+			<!--Update RC tab (from live) -->
+			{% include 'updrc.html' %}
+	</div>
+</div>
 {% include 'footer.html' %}

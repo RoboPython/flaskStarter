@@ -22,7 +22,7 @@ app.debug = True
 app.debug = True
 
 Triangle(app)
-scss = Scss(app, static_dir='static/dep/', asset_dir='assets');
+scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('pythonConfig.txt','r')
 config = json.loads(config.read())
@@ -31,15 +31,6 @@ PATH_TO_ANSIBLE = config['path_to_ansible']
 PATH_PYTHON_APP = config['path_python_app']
 MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
-
-
-
-#Socketio test
-
-#@socketio.on('connect', namespace='/serv')
-#def handle_connection():
-#    print 'connection initialized'
-
 
 def task_parser(string_value, brandcode): 
     string_value = re.split('\n\s*\n', string_value)  

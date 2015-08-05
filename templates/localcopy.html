@@ -1,7 +1,7 @@
-<div class='row' ng-show='activeTab == "localCopy"' ng-controller='pullcopylocal' data-ng-init='init()'>
-	<div class='col-md-6'>
+<div class='row' role="contain" ng-show='activeTab == "localCopy"' ng-controller='pullcopylocal' data-ng-init='init()'>
+	<div class='col-md-12'>
 		<div class='row'>
-			<div class='col-md-10 col-md-offset-1'>
+			<div class='col-md-6 col-md-offset-1'>
 				<h2> Pull a Local Copy </h2>
 			</div>
 		</div>
@@ -62,14 +62,16 @@
 				</div>
 				<div class='row'>
 					<div class='col-md-3 col-md-offset-3'>
-						<!--<img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'/>	-->
+						<img src='http://i1142.photobucket.com/albums/n606/Ingund_Of_Brionne/ezgif.com-crop.gif'/>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class='row' ng-show='controlList.localCopy.loaded'>
-		<div class='col-md-10 col-md-offset-1'>
+
+
+	<div class='row'>
+		<div class='col-md-10 col-md-offset-2'>
 			<div ng-repeat='server in controlList.localCopy.data.tasks'>
 				<h3>{{server.name | angular }}</h3>
 				<div ng-repeat='task in server.task'>
