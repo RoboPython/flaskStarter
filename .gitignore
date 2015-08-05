@@ -1,1 +1,3 @@
 pythonConfig.txt
+#Ignore compiled
+*.pyc
