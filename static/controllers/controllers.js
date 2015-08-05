@@ -44,8 +44,9 @@ controllers.controller('pullcopylocal', [
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
         $scope.init = function() {
-            var events = eventSource.init('/');
-            events.registerHandler('msg', function(msg) {
+            var events = eventSource.init('/localCopy');
+            
+			events.registerHandler('msg', function(msg) {
                 console.log(msg);
             });
         };
