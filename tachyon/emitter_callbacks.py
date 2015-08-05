@@ -115,7 +115,7 @@ class EmitterCallbacks:
     TODO.
     '''
     def on_setup(self):
-        return_dict = {"event":"startup"}
+        return_dict = {"event":"setup"}
         self.emitter(return_dict)
 
 

@@ -1,6 +1,7 @@
+import subprocess
 from flask import Flask
 from flask import render_template
-from flask.ext.socketio import SocketIO, emit
+#from flask.ext.socketio import SocketIO, emit
 from flask import request
 
 from flask.ext.triangle import Triangle
@@ -9,17 +10,15 @@ from tachyon import bridge
 
 import re
 import json
-import subprocess
 import random
 import os
 import old.oldapi
 
 
-
 app = Flask(__name__)
 
 Triangle(app)
-socketio = SocketIO(app)
+#socketio = SocketIO(app)
 scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('pythonConfig.txt','r')
@@ -35,9 +34,9 @@ app.debug = True
 
 #Socketio test
 
-@socketio.on('connect', namespace='/serv')
-def handle_connection():
-    print 'connection initialized'
+#@socketio.on('connect', namespace='/serv')
+#def handle_connection():
+#    print 'connection initialized'
 
 
 def task_parser(string_value, brandcode): 
@@ -124,13 +123,13 @@ ansible-playbook pull-full-copy.yml \
 def localCopy():
     def on_dict(returned_object):
         print returned_object
-    bridge.run_playbook(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory', on_dict)
+    bridge.run_playbook(PATH_TO_ANSIBLE + '/pull-full-copy.yml', PATH_TO_ANSIBLE + '/inventory',{'mysql_root_pw':MYSQL_ROOT_PW},"zz", on_dict)
 
 
     
 
 
 if __name__ == '__main__':
-    socketio.run(app, '127.0.0.1', 5000)
-    #app.run('127.0.0.1', 5000)
+#    socketio.run(app, '127.0.0.1', 5000)
+    app.run('127.0.0.1', 5000)
     
