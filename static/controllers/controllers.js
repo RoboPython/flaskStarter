@@ -50,8 +50,9 @@ controllers.controller('pullcopylocal', [
         $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
             var events = eventSource.init('/localCopy');
             events.registerHandler('msg', function(msg) {
-                console.log(msg);
-                var messageObj = JSON.parse(msg);
+
+                var messageObj = JSON.parse(msg.data);
+                console.log(messageObj);
                 if(messageObj.event == "finished") {
                     events.close();
                     console.log("connection close");
