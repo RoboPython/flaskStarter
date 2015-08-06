@@ -99,8 +99,8 @@ mainApp.service('parseJson', ['$q',
 ]);
 
 mainApp.service('parsePlaybooks', [
-
-    function() {
+    '$rootScope',
+    function($rootScope) {
 
         this.parse = function(playbooks) {
             var books = {};
@@ -110,24 +110,30 @@ mainApp.service('parsePlaybooks', [
                 var play = {
                     name: tmp_playbook.name,
                     shortcode: tmp_playbook.shortname,
-                    fields: this.generateBindings(tmp_playbook.fields),
+                    fields: this.generateElements(tmp_playbook.fields),
                 };
                 books[play.shortcode] = play;
             }
             return books;
         };
 
-        this.generateBindings = function(fields) {
+        this.generateElements = function(fields) {
             for(var field in fields) { 
                 var tmp_field = fields[field];
 
-                
-                
+                //Get element based off of type
+                var element = $rootScope.typeConversions[tmp_field.type];
+                tmp_field.element = element;
+
                 var binding = {
                     model_bind: tmp_field.placeholder,
                     model_required: tmp_field.required,
-                    model_options: {opt1: "test"}
+                    model_options: null
                 };
+
+                //Check if external data required here
+                //if()
+
                 tmp_field.bindingData = binding;
             }
 

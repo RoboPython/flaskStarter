@@ -9,17 +9,23 @@
 		{% include 'infobar.html' %}
 		
 		<div class='row' role="contain">
+			<h1 class="row"> {{site.currentBook.name | angular}}</h1>
 			<fieldset class='row' ng-repeat="book in site.currentBook.fields">
-					<div class="col-md-3 col-md-offset-1">
-						<h3 class="section-title"> {{ book.name | angular }} </h3>
-						<p class="detail"> {{ book.label | angular }} </p>
-						<hr/>
-						<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
-						<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="" ng-required="book.bindingData.model_required"></select>
-					</div>
-				</div>
+				<div class="col-md-3 col-md-offset-1">
+					<h3 class="section-title"> {{ book.name | angular }} </h3>
+					<p class="detail"> {{ book.label | angular }} </p>
+					<hr />
+					<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
+				<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="" ng-required="book.bindingData.model_required"></select>
 			</div>
 		</fieldset>
 	</div>
+	<div class='row'>
+		<div class='col-md-11 col-md-offset-1'>
+		<!-- brandCodeSelected,controlList.localCopy.local,controlList.localCopy.source.name,serverTypeSelected,controlList.localCopy.withdb -->
+			<button ng-click='localCopy()' class="btn btn-default btn-lg" >Pull Local Copy</button>
+		</div>
+	</div>
+</div>
 </div>
 {% include 'footer.html' %}

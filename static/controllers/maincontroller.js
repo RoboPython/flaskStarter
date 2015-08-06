@@ -12,17 +12,23 @@ controllers.controller('mainController', [
         $rootScope.filetree = sharedProps.filetreeData;
         $rootScope.playbooks = sharedProps.playbookData;
         $scope.currentTab = "localCopy";
+
         $scope.site = {
             playbooks: parsePlaybooks.parse($rootScope.playbooks),
             currentBook: null
         };
 
-
+        $scope.brandCodeSelected = "zz";
+        $scope.serverTypeSelected = "test"
         // $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
         $scope.adminTab = 'active';
         $scope.developerTab = '';
         $scope.adminActions = true;
         $scope.developerActions = false;
+
+        $scope.localCopy = function() {
+            
+        };
 
         $scope.expandTask = function(task) {
             $scope.currentTab = task;
