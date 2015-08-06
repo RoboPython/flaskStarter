@@ -2,6 +2,7 @@
 	"playbooks":[
 		{
 			"name":"Pull a local copy of live site",
+			"shortname":"localCopy",
 			"yaml": "pull-full-copy.yml",
 			"fields":[
 				{
@@ -40,31 +41,37 @@
 		},
 		{
 			"name":"Push code fix to RC for approval",
+			"shortname":"pushFix",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		},
 		{
 			"name":"Switch Latest and Testing Sites",
+			"shortname":"switchTestingLatest",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		},
 		{
 			"name":"Released approved site from RCC",
+			"shortname":"releaseApproved",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		},
 		{
 			"name":"Roll back live site",
+			"shortname":"rollBack",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		},
 		{
 			"name":"Update copy from live",
+			"shortname":"updateCopy",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		},
 		{
 			"name":"Update RC from live",
+			"shortname":"freshenRemote",
 			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
 			"fields":[]
 		}
