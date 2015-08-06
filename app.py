@@ -35,10 +35,10 @@ def redesign():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
     filetree_cache = f.read().strip()
     f.close()
-    f2 = open (PATH_PYTHON_APP +'/config/playbooks_to_json.json'
+    f2 = open (PATH_PYTHON_APP +'config/playbooks.json')
     playbook_json = f2.read().strip()
     f2.close()
-    return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbooks_to_json":playbook_json})
+    return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbook_json":playbook_json})
 
 @app.route('/playbooks.json')
 def get_playbooks():
