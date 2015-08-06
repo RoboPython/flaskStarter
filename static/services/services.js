@@ -57,7 +57,7 @@ mainApp.factory('eventSource', [
                 };
             },
             registerHandler: function(type, handler) {
-                switch(type) {
+                switch (type) {
                     case 'err':
                         this.errorHandlers.push(handler);
                         console.log("New error handler added.")
@@ -95,5 +95,29 @@ mainApp.service('parseJson', ['$q',
             });
             return def.promise;
         }
+    }
+]);
+
+mainApp.service('parsePlaybooks', [
+
+    function() {
+
+        this.parse = function(playbooks) {
+            var books = [];
+            
+            for (var playbook in playbooks["playbooks"]) {
+                
+                var tmp_playbook = playbooks["playbooks"][playbook];
+                
+                var play = {
+                    name: tmp_playbook.name,
+                    shortcode: tmp_playbook.shortname,
+                    fields: tmp_playbook.fields,
+                };
+
+                books.push(play);
+            }
+            return books;
+        };
     }
 ]);
