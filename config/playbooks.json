@@ -14,14 +14,14 @@
 				},
 				{
 					"name":"source",
-					"label":"Select remote folder to pull"
+					"label":"Select remote folder to pull",
 					"type":"select",
 					"returnType":"string",
 					"required":true,
 					"valueType":"api",
 					"values":{
 						"method":"GET",
-						"path":"/getFiletree",
+						"path":"/getFiletree"
 
 					}
 

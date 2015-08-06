@@ -6,7 +6,8 @@
 	<script>
 		mainApp.service('sharedProps', function() {
 			return {
-				filetreeData: JSON.parse({{data | tojson | safe}}),
+				filetreeData: JSON.parse({{data.filetree_cache | tojson | safe}}),
+				playbookData: JSON.parse({{data.playbook_json | tojson | safe}})
 			};
 		});
 	</script>
