@@ -18,17 +18,13 @@ controllers.controller('mainController', [
             currentBook: null
         };
 
-        $scope.brandCodeSelected = "zz";
-        $scope.serverTypeSelected = "test"
+        $rootScope.brandCodeSelected = "zz";
+        $rootScope.serverTypeSelected = "test"
         // $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
         $scope.adminTab = 'active';
         $scope.developerTab = '';
         $scope.adminActions = true;
         $scope.developerActions = false;
-
-        $scope.localCopy = function() {
-            
-        };
 
         $scope.expandTask = function(task) {
             $scope.currentTab = task;
@@ -37,6 +33,7 @@ controllers.controller('mainController', [
 
         $scope.init = function() {
             $scope.expandTask($scope.currentTab);
+            console.log($scope.site.currentBook);
         };
     }
 ]);

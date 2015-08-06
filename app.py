@@ -16,8 +16,6 @@ import os
 app = Flask(__name__)
 app.debug = True
 
-app.debug = True
-
 Triangle(app)
 scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
@@ -71,40 +69,40 @@ def getFiletree():
     server_codes = config['list_of_servers']
     returnObj = {}
     for code in server_codes:
-        print 'we are doing stuff honest'
-        os.chdir(PATH_TO_ANSIBLE)
-        filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
-        filetree = subprocess.check_output(filetree_command)
-        filetree = task_parser(filetree,code)
+        # print 'we are doing stuff honest'
+        # os.chdir(PATH_TO_ANSIBLE)
+        # filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
+        # filetree = subprocess.check_output(filetree_command)
+        # filetree = task_parser(filetree,code)
+        filetree = ["zz_0.1", "zz_0.2", "latest", "testing"]
+    #     tasks = [
+    #         {
+    #             'name': 'Get file Tree from /var/www on the '+ code +' server group',
+    #             'success': True,
+    #             'errorMessage': None
+    #         }
+    #     ]
 
-        tasks = [
-            {
-                'name': 'Get file Tree from /var/www on the '+ code +' server group',
-                'success': True,
-                'errorMessage': None
-            }
-        ]
+    #     filetree_data = {
+    #         "data":{
+    #             "test": json.loads(filetree[0])['stat']['files'],
+    #             "live": json.loads(filetree[1])['stat']['files']
+    #         },
+    #         "meta":{
+    #             "tasks": tasks
+    #         },
+    #         "code": code
+    #     }
 
-        filetree_data = {
-            "data":{
-                "test": json.loads(filetree[0])['stat']['files'],
-                "live": json.loads(filetree[1])['stat']['files']
-            },
-            "meta":{
-                "tasks": tasks
-            },
-            "code": code
-        }
+    #     returnObj[code] = filetree_data
 
-        returnObj[code] = filetree_data
-
-    returnObj = json.dumps(returnObj, separators =(',',':'))
+    # returnObj = json.dumps(returnObj, separators =(',',':'))
 
 
-    f = open(PATH_PYTHON_APP+'filetree.txt','w')
-    f.write(returnObj)
-    f.close()
-    return returnObj
+    # f = open(PATH_PYTHON_APP+'filetree.txt','w')
+    
+
+    return json.dumps(filetree)
 
 
 # def run_playbook(playbook_path, inventory_path, event_callback=None):
@@ -139,4 +137,4 @@ def localCopy():
 
 
 if __name__ == '__main__':
-    app.run('127.0.0.1', 5000,threaded=True)
+    app.run('127.0.0.1', 5000, threaded=True)
