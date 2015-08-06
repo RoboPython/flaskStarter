@@ -1,7 +1,34 @@
 {
 	"playbooks":[
 		{
-			"name":"Pull a local copy of live site",
+			"name":"Freshen a remote site with local files no DB push/update",
+			"shortname":"freshenRemote",
+			"yaml": "push-local-to-remote.yml",
+			"fields":[
+				{
+					"name":	"target",
+					"label":"File to save version in on remote machine",
+					"type":"text",
+					"returnType":"string",
+					"required":true,
+					"placeholder":"/var/tmp/zz_0.0"
+				},
+				{
+					"name":"source",
+					"label":"Path to local data to use for site",
+					"type":"text",
+					"returnType":"string",
+					"required":true,
+					"placeholder":"/home/tobias/workspace/Cottaging/sites/zz"
+				}
+			],
+			"configNodes":[],
+			"constants":[]
+		},
+
+
+		{
+			"name":"Pull a local copy of live site without DB",
 			"shortname":"localCopy",
 			"yaml": "pull-full-copy.yml",
 			"fields": [
@@ -24,7 +51,6 @@
 						"method":"GET",
 						"path":"/getFiletree"
 					}
-
 				},
 				{
 					"name":"withdb",
@@ -40,45 +66,9 @@
 					"argName": "mysql_root_pw",
 					"node": "mysql_root_pw"
 				}	
-			]
-
-
-		},
-		{
-			"name":"Push code fix to RC for approval",
-			"shortname":"pushFix",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
-		},
-		{
-			"name":"Switch Latest and Testing Sites",
-			"shortname":"switchTestingLatest",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
-		},
-		{
-			"name":"Released approved site from RCC",
-			"shortname":"releaseApproved",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
-		},
-		{
-			"name":"Roll back live site",
-			"shortname":"rollBack",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
-		},
-		{
-			"name":"Update copy from live",
-			"shortname":"updateCopy",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
-		},
-		{
-			"name":"Update RC from live",
-			"shortname":"freshenRemote",
-			"yaml": "OMAN I AM NOT GOOD WITH COMPUTER PLS TO HELP",
-			"fields":[]
+			],
+			"constants":[]
 		}
+
 	]
 }

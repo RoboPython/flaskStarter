@@ -16,6 +16,7 @@
 					<p class="detail"> {{ book.label | angular }} </p>
 					<hr />
 					<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
+					{{book.bindingData | angular}}
 				<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="o as o for o in book.bindingData.model_options" ng-required="book.bindingData.model_required"></select>
 			</div>
 		</fieldset>

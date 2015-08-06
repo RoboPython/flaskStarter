@@ -84,10 +84,9 @@ controllers.controller('pullcopylocal', [
             jQuery(e.target).parent().children('div.details').toggle();
 
         };
-        
+
         $scope.go = function() {
             var currentPage = $scope.site.currentBook;
-            
             var params = {};
 
             params.shortCode = currentPage.shortcode;
@@ -100,10 +99,6 @@ controllers.controller('pullcopylocal', [
                 var bindData = currentPage.fields[field].bindingData["model_bind"];
                 requestString += '&' + field + '=' + bindData;
             };
-
-            var localCode = currentPage.fields["local"].bindingData.model_bind;
-            var sourceCode = currentPage.fields["source"].bindingData.model_bind;
-            var dbCode = currentPage.fields["withdb"].bindingData.model_bind;
 
             if (!$scope.running) {
                 var events = eventSource.init(requestString);
