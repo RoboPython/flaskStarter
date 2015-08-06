@@ -57,7 +57,7 @@ mainApp.factory('eventSource', [
                 };
             },
             registerHandler: function(type, handler) {
-                switch(type) {
+                switch (type) {
                     case 'err':
                         this.errorHandlers.push(handler);
                         console.log("New error handler added.")
@@ -95,5 +95,79 @@ mainApp.service('parseJson', ['$q',
             });
             return def.promise;
         }
+    }
+]);
+
+//TODO: MAKE FACTORY TO PARSE URLS THINGS
+//mainApp.factory('')
+
+mainApp.service('parsePlaybooks', [
+    '$rootScope',
+    '$http',
+    '$q',
+    function($rootScope, $http, $q) {
+
+        this.parse = function(playbooks) {
+            var books = {};
+
+            for (var playbook in playbooks["playbooks"]) {
+                var tmp_playbook = playbooks["playbooks"][playbook];
+                var play = {
+                    name: tmp_playbook.name,
+                    shortcode: tmp_playbook.shortname,
+                    fields: this.generateElements(tmp_playbook.fields),
+                };
+                books[play.shortcode] = play;
+            }
+            return books;
+        };
+
+
+        this.getRemoteValue = function(path) {            
+            var def = $q.defer();
+            $http.get(path).then(function(res) {
+                def.resolve(res);
+            }, function(res) {
+                def.reject(res);
+            });
+            return def.promise;
+        };
+
+        this.generateElements = function(fields) {
+            var new_fields = {};
+            for (var field in fields) {
+                var tmp_field = fields[field];
+
+                //Get element based off of type
+                var element = $rootScope.typeConversions[tmp_field.type];
+                tmp_field.element = element;
+
+                var binding = {
+                    model_bind: tmp_field.placeholder,
+                    model_required: tmp_field.required || "required",
+                    model_options: null
+                };
+
+                //Check if external data required here
+                var remote = tmp_field["remoteValues"];
+                var prom = null;
+
+                if (remote !== undefined) {
+                    var valluu = this.getRemoteValue(remote.path);
+                    var right_binding = binding;
+                    valluu.then(function(res) {
+                        //TODO: DO PROPER LIKE
+                        right_binding.model_bind = res.data[0];
+                        right_binding.model_options = res.data;
+                    });
+                }
+
+                new_fields[tmp_field.name] = tmp_field;
+                new_fields[tmp_field.name].bindingData = binding;
+            }
+
+            return new_fields;
+
+        };
     }
 ]);

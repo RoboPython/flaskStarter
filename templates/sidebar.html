@@ -1,26 +1,5 @@
 <div class='col-md-2 sidebar'>
-	<div class='row sidebar-item' ng-click='expandTask("listVersions")'>
-		<h4>See Versions</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("pushFix")'  >
-		<h4>Push code fix to RC for approval</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("switchTestingLatest")' >
-		<h4>Switch Latest and Testing Sites</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("releaseApproved")' >
-		<h4>Released approved site from RC</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("rollBack")'  >
-		<h4>Roll back live site</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("localCopy")'  >
-		<h4>Pull a local copy of live Site</h4>
-	</div>
-	<div class='row sidebar-item'  ng-click='expandTask("updateCopy")'>
-		<h4>Update Copy from Live</h4>
-	</div>
-	<div class='row sidebar-item' ng-click='expandTask("freshenRemote")' >
-		<h4>Update RC from live</h4>
+	<div class='row sidebar-item' ng-class="(title.shortcode==currentTab) ? 'selected' : ''" ng-click="expandTask(title.shortcode)" ng-repeat='title in site.playbooks'>
+		<h4>{{title.name | angular}}</h4>
 	</div>
 </div>

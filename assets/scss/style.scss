@@ -11,23 +11,40 @@ h2 {
     padding: 0px;
     margin: 0px;
 }
-
+/* TEST */
 p {
     font-family: 'Play', sans-serif;
     font-size: 15px;
     margin: 0;
+    &.detail {
+        margin-left: 20px;
+    }
+    &.detail::before {
+        content: "-";
+        font-style: italic;
+    }
 }
 
 a {
     font-family: 'Play', sans-serif;
     font-size: 15px;
-    
+    &.section-title {
+        text-decoration: underline;
+    }
 }
 
 b {
     &.status-text {
         float: left;
     }
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    margin: 5;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 .tick-img {
@@ -82,6 +99,7 @@ div {
 }
 
 
+
 .taskbar {
     border-width: 2px;
     border-style: solid;
@@ -111,9 +129,10 @@ div {
     background-color: #0066ff;
 }
 
+$tab-color: #0066ff;
 .sidebar-item {
     color: #ffffff;
-    background-color: #0066ff;
+    background-color: $tab-color;
     padding-top: 8px;
     padding-bottom: 8px;
     text-align: center;
@@ -125,6 +144,12 @@ div {
 .sidebar-item:hover {
     color: #0066ff;
     background-color: #b2d1ff;
+}
+
+
+.selected {
+    margin-left: 10px;
+    background-color: darken( $tab-color, 10% )
 }
 
 .changed {

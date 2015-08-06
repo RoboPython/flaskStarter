@@ -39,13 +39,13 @@ controllers.controller('versions', [
 ]);
 
 controllers.controller('pullcopylocal', [
-    
+
     '$rootScope',
     '$scope',
     'ajaxOperations',
     'eventSource',
     function($rootScope, $scope, ajaxOperations, eventSource) {
-        
+
         $scope.init = function() {
             $scope.code = "";
             $scope.running = false;
@@ -85,18 +85,30 @@ controllers.controller('pullcopylocal', [
 
         };
 
-        $scope.localCopy = function(brand_code, local, source, server_type, withdb) {
+        $scope.go = function() {
+            var currentPage = $scope.site.currentBook;
+            var params = {};
+
+            params.shortCode = currentPage.shortcode;
+            params.serverType = $scope.serverTypeSelected;
+            params.serverCode = $scope.brandCodeSelected;
+
+            var requestString = "/run_playbook?shortname=" + params.shortCode + "&code=" + params.serverCode + "&serverType=" + params.serverType;
+
+            for(var field in currentPage.fields) {
+                var bindData = currentPage.fields[field].bindingData["model_bind"];
+                requestString += '&' + field + '=' + bindData;
+            };
+
             if (!$scope.running) {
-                var requestString = '/localCopy?code=' + brand_code + '&local=' + local + '&source=' + source + '&serverType=' + server_type + '&withdb=' + withdb;
                 var events = eventSource.init(requestString);
-                $scope.code = brand_code;
+                $scope.code = currentPage.shortcode;
                 $scope.running = true;
                 $scope.tasks[$scope.code] = {
                     status: "ok",
                     name: $scope.code,
                     tasks: []
                 };
-
                 events.registerHandler('msg', $scope.messageHandler);
                 events.registerHandler('err', $scope.errorHandler);
                 events.registerHandler('status', $scope.statusHandler);

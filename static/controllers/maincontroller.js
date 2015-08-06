@@ -6,53 +6,34 @@ controllers.controller('mainController', [
     'sharedProps',
     'ajaxOperations',
     'parseJson',
-    function($rootScope, $scope, $http, $sce, sharedProps, ajaxOperations, parseJson) {
+    'parsePlaybooks',
+    function($rootScope, $scope, $http, $sce, sharedProps, ajaxOperations, parseJson, parsePlaybooks) {
         //Variables local to page
         $rootScope.filetree = sharedProps.filetreeData;
-        $scope.brandCodeSelected = 'zz';
-        $scope.serverTypeSelected = 'test'
-        $scope.tick = "http://i.imgur.com/ATfTAaB.png";
-        $scope.cross = "http://i.imgur.com/PZvHtcx.png";
+        $rootScope.playbooks = sharedProps.playbookData;
+        $scope.currentTab = "localCopy";
 
-        $scope.version = {
-            "live": "",
-            "test": ""
+        $scope.site = {
+            playbooks: parsePlaybooks.parse($rootScope.playbooks),
+            currentBook: null
         };
 
-        $scope.activeTab = 'listVersions';
-
-        $scope.controlList = {
-            'listVersions': {
-                'brandCode': null,
-                'path': '/var/www',
-                'data': $rootScope.filetree,
-                'parsedData': ''
-            },
-            'pushFix': {},
-            'switchTestingLatest': {},
-            'releaseApproved': {},
-            'rollBack': {},
-            'localCopy': {
-                'local': '/var/tmp',
-                'withdb': false
-            },
-            'updateCopy': {},
-            'freshenRemote': {},
-        };
-
-        $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
-
+        $rootScope.brandCodeSelected = "zz";
+        $rootScope.serverTypeSelected = "test"
+        // $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
         $scope.adminTab = 'active';
         $scope.developerTab = '';
         $scope.adminActions = true;
         $scope.developerActions = false;
 
         $scope.expandTask = function(task) {
-            $scope.activeTab = task;
+            $scope.currentTab = task;
+            $scope.site.currentBook = $scope.site.playbooks[$scope.currentTab]; 
         };
 
         $scope.init = function() {
-
+            $scope.expandTask($scope.currentTab);
+            console.log($scope.site.currentBook);
         };
     }
 ]);
