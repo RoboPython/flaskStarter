@@ -8,7 +8,7 @@
 				{
 					"name":	"local",
 					"label":"Local directory to save in",
-					"type":"text",
+					"type":"input",
 					"returnType":"string",
 					"required":true,
 					"placeholder":"/var/tmp"

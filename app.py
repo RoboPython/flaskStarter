@@ -30,6 +30,14 @@ MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 LIST_OF_SERVERS = config['list_of_servers']
 
+playbooks = None
+with open('config/playbooks.json', 'r') as playbooks_file:
+    try:
+        playbooks_raw = playbooks_file.read()
+        playbooks = json.loads(playbooks_raw)
+    except Exception as e:
+        print('Could not load playbooks.json:', str(e))
+
 @app.route('/')
 def redesign():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
@@ -40,14 +48,22 @@ def redesign():
     f2.close()
     return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbook_json":playbook_json})
 
+
+
 @app.route('/playbooks.json')
 def get_playbooks():
-    with open('config/playbooks.json', 'r') as playbooks_file:
-        try:
-            playbooks_raw = playbooks_file.read()
-            return Response(response=playbooks_raw, status=200, mimetype="application/json")
-        except Exception as e:
-            return flask.jsonify(error=str(e))
+    playbooks_raw = json.dumps(playbooks)) 
+    return Response(response=playbooks_raw, status=200, mimetype="application/json")
+
+@app.route('/run_playbook', methods=['POST'])
+def call_run_playbook():
+    shortname = None
+    if "shortname" in request.form:
+        shortname = request.form["shortname"]
+    else:
+        return flask.jsonify(error="'shortname' parameter was missing")
+
+
 
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
