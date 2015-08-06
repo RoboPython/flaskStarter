@@ -8,35 +8,18 @@
 		<!-- Info bar -->
 		{% include 'infobar.html' %}
 		
-
-
-
-
-
-
-
-
-
-
-			<!-- Versions tab -->
-			<!-- {% include 'versions.html' %} -->
-			
-			<!-- PushFix tab -->
-			<!-- {% include 'pushfix.html' %} -->
-			<!-- Latest / Testing Sites tab -->
-			<!-- {% include 'testinglatest.html' %} -->
-			<!-- Release approved tab -->
-			<!-- {% include 'releaseapprvd.html' %} -->
-			
-			<!-- Rollback tab -->
-			<!-- {% include 'rollback.html' %} -->
-			<!-- Pull Local copy tab -->
-			<!-- {% include 'localcopy.html' %} -->
-			
-			<!-- Update local copy tab (from live) -->
-			<!-- {% include 'updlocalcopy.html' %} -->
-			<!--Update RC tab (from live) -->
-			<!-- {% include 'updrc.html' %} -->
+		<div class='row' role="contain">
+			<fieldset class='row' ng-repeat="book in site.currentBook.fields">
+					<div class="col-md-3 col-md-offset-1">
+						<h3 class="section-title"> {{ book.name | angular }} </h3>
+						<p class="detail"> {{ book.label | angular }} </p>
+						<hr/>
+						<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
+						<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="" ng-required="book.bindingData.model_required"></select>
+					</div>
+				</div>
+			</div>
+		</fieldset>
 	</div>
 </div>
 {% include 'footer.html' %}

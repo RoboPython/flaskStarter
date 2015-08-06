@@ -11,14 +11,13 @@ controllers.controller('mainController', [
         //Variables local to page
         $rootScope.filetree = sharedProps.filetreeData;
         $rootScope.playbooks = sharedProps.playbookData;
-        
+        $scope.currentTab = "localCopy";
         $scope.site = {
             playbooks: parsePlaybooks.parse($rootScope.playbooks),
-            tabs: {
-                titles: ""
-            }
+            currentBook: null
         };
-        //console.log($scope.site.tabs.titles());
+
+
         // $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
         $scope.adminTab = 'active';
         $scope.developerTab = '';
@@ -26,11 +25,12 @@ controllers.controller('mainController', [
         $scope.developerActions = false;
 
         $scope.expandTask = function(task) {
-            $scope.activeTab = task;
+            $scope.currentTab = task;
+            $scope.site.currentBook = $scope.site.playbooks[$scope.currentTab]; 
         };
 
         $scope.init = function() {
-
+            $scope.expandTask($scope.currentTab);
         };
     }
 ]);

@@ -16,18 +16,35 @@ p {
     font-family: 'Play', sans-serif;
     font-size: 15px;
     margin: 0;
+    &.detail {
+        margin-left: 20px;
+    }
+    &.detail::before {
+        content: "-";
+        font-style: italic;
+    }
 }
 
 a {
     font-family: 'Play', sans-serif;
     font-size: 15px;
-    
+    &.section-title {
+        text-decoration: underline;
+    }
 }
 
 b {
     &.status-text {
         float: left;
     }
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    margin: 5;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 .tick-img {

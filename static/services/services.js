@@ -103,21 +103,36 @@ mainApp.service('parsePlaybooks', [
     function() {
 
         this.parse = function(playbooks) {
-            var books = [];
-            
+            var books = {};
+
             for (var playbook in playbooks["playbooks"]) {
-                
                 var tmp_playbook = playbooks["playbooks"][playbook];
-                
                 var play = {
                     name: tmp_playbook.name,
                     shortcode: tmp_playbook.shortname,
-                    fields: tmp_playbook.fields,
+                    fields: this.generateBindings(tmp_playbook.fields),
                 };
-
-                books.push(play);
+                books[play.shortcode] = play;
             }
             return books;
+        };
+
+        this.generateBindings = function(fields) {
+            for(var field in fields) { 
+                var tmp_field = fields[field];
+
+                
+                
+                var binding = {
+                    model_bind: tmp_field.placeholder,
+                    model_required: tmp_field.required,
+                    model_options: {opt1: "test"}
+                };
+                tmp_field.bindingData = binding;
+            }
+
+            return fields;
+
         };
     }
 ]);

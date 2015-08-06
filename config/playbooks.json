@@ -9,6 +9,7 @@
 					"name":	"local",
 					"label":"Local directory to save in",
 					"type":"text",
+					"element":"input",
 					"returnType":"string",
 					"required":true,
 					"placeholder":"/var/tmp"
@@ -17,6 +18,7 @@
 					"name":"source",
 					"label":"Select remote folder to pull",
 					"type":"select",
+					"element":"select",
 					"returnType":"string",
 					"required":true,
 					"valueType":"api",
@@ -30,7 +32,9 @@
 					"name":"withdb",
 					"label":"Create new DB?",
 					"type":"checkbox",
+					"element":"input",
 					"returnType":"boolean",
+					"required":false,
 					"placeholder":false
 
 				}
