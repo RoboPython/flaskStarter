@@ -35,7 +35,10 @@ def redesign():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
     filetree_cache = f.read().strip()
     f.close()
-    return render_template('index.html', data = filetree_cache)
+    f2 = open (PATH_PYTHON_APP +'/config/playbooks_to_json.json'
+    playbook_json = f2.read().strip()
+    f2.close()
+    return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbooks_to_json":playbook_json})
 
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
@@ -95,7 +98,7 @@ def localCopy():
     if request.args['serverType'] != 'All':
         limit = request.args['code'] +'_'+request.args['serverType']
     else:
-      return "nope can't accept that as a serverType"
+        return "Error: cannot pull local copy of more than one server at a time"
 
     extra_vars = { 'mysql_root_pw': MYSQL_ROOT_PW }
 
@@ -105,7 +108,10 @@ def localCopy():
                 yield callback_json
         return Response(events(), content_type='text/event-stream')
     else:
-        return 'Just in case the front end messes up its header LOL'
+        return 'Error: request header is not "text/event-stream"'
+
+
+
 
 if __name__ == '__main__':
     app.run('127.0.0.1', 5000)
