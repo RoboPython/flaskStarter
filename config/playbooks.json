@@ -33,8 +33,13 @@
 					"returnType":"boolean",
 					"required":false,
 					"placeholder":false
-
 				}
+			],
+			"configNodes":[
+				{
+					"argName": "mysql_root_pw",
+					"node": "mysql_root_pw"
+				}	
 			]
 
 
