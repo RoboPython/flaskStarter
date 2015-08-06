@@ -104,6 +104,10 @@ def call_run_playbook():
     for configObj in playbook['configNodes']:
         extra_vars[configObj["argName"]] = config[configObj['node']]
 
+    for constantObj in playbook['constants']:
+        extra_vars[configObj["argName"]] = configObj['value']
+    
+
     print(json.dumps(extra_vars))
 
     playbook_path = PATH_TO_ANSIBLE + '/' + playbook['yaml']
