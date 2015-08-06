@@ -40,6 +40,15 @@ def redesign():
     f2.close()
     return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbooks_to_json":playbook_json})
 
+@app.route('/playbooks.json')
+def get_playbooks():
+    with open('config/playbooks.json', 'r') as playbooks_file:
+        try:
+            playbooks_raw = playbooks_file.read()
+            return Response(response=playbooks_raw, status=200, mimetype="application/json")
+        except Exception as e:
+            return flask.jsonify(error=str(e))
+
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
 def getFiletree():
