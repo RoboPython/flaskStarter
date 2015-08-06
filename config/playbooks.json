@@ -20,7 +20,7 @@
 					"returnType":"string",
 					"required":true,
 					"valueType":"api",
-					"values":{
+					"remoteValues":{
 						"method":"GET",
 						"path":"/getFiletree"
 
