@@ -108,22 +108,26 @@ hr {
                 color: #0066ff;
                 background-color: #b2d1ff; }
 
-                .changed {
-                  color: #aaaa00; }
+                .selected {
+                  margin-left: 10px;
+                  background-color: #0052cc; }
 
-                  .success {
-                    color: #00cc00; }
+                  .changed {
+                    color: #aaaa00; }
 
-                    .failed {
-                      color: #ff0000; }
+                    .success {
+                      color: #00cc00; }
 
-                      .skipped {
-                        color: #0099ff; }
+                      .failed {
+                        color: #ff0000; }
 
-                        .unreachable {
-                          color: #000000; }
+                        .skipped {
+                          color: #0099ff; }
 
-                          .fail-border {
-                            border-color: #ff0000;
-                            border-width: 2px;
-                            border-style: solid; }
+                          .unreachable {
+                            color: #000000; }
+
+                            .fail-border {
+                              border-color: #ff0000;
+                              border-width: 2px;
+                              border-style: solid; }

@@ -99,6 +99,7 @@ div {
 }
 
 
+
 .taskbar {
     border-width: 2px;
     border-style: solid;
@@ -128,9 +129,10 @@ div {
     background-color: #0066ff;
 }
 
+$tab-color: #0066ff;
 .sidebar-item {
     color: #ffffff;
-    background-color: #0066ff;
+    background-color: $tab-color;
     padding-top: 8px;
     padding-bottom: 8px;
     text-align: center;
@@ -142,6 +144,12 @@ div {
 .sidebar-item:hover {
     color: #0066ff;
     background-color: #b2d1ff;
+}
+
+
+.selected {
+    margin-left: 10px;
+    background-color: darken( $tab-color, 10% )
 }
 
 .changed {
