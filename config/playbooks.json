@@ -32,9 +32,16 @@
 					"label":"Create new DB?",
 					"type":"checkbox",
 					"returnType":"boolean",
-					"placeholder":false
+					"placeholder":false,
+					"required":false
 
 				}
+			],
+			"configNodes":[
+				{
+					"argName": "mysql_root_pw",
+					"node": "mysql_root_pw"
+				}	
 			]
 
 
