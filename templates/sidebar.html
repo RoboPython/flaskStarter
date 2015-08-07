@@ -2,4 +2,7 @@
 	<div class='row sidebar-item' ng-class="(title.shortcode==currentTab) ? 'selected' : ''" ng-click="expandTask(title.shortcode)" ng-repeat='title in site.playbooks'>
 		<h4>{{title.name | angular}}</h4>
 	</div>
+	<div class='row sidebar-item' ng-class="(title.shortcode==currentTab) ? 'selected' : ''" ng-click="expandTask(title.shortcode)" ng-repeat='title in site.staticPages'>
+		<h4>{{title.shortcode | angular}}</h4>
+	</div>
 </div>

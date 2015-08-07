@@ -63,11 +63,13 @@ div {
     &.details {
         display: none;
         width: 100%;
+        overflow: scroll;
 
     }
 
     &.show-details {
         margin-left: 20px;
+
     }
 
     &.expandable {
@@ -89,6 +91,13 @@ div {
 .row-centered {
     text-align:center;
 }
+
+.row {
+    &.section-contain {
+        margin-bottom: 25px;
+    }
+}
+
 .col-centered {
     display:inline-block;
     float:none;
@@ -98,7 +107,18 @@ div {
     margin-right:-4px;
 }
 
-
+.taskrunner {
+    float: right;
+    z-index: 5000;
+    position: fixed;
+    height: 500px;
+    width: 400px;
+    right: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 500px;
+    border: 2px solid black;
+}
 
 .taskbar {
     border-width: 2px;
@@ -133,6 +153,9 @@ $tab-color: #0066ff;
 .sidebar-item {
     color: #ffffff;
     background-color: $tab-color;
+    h4, .h4 {
+        font-size: 15px;
+    }
     padding-top: 8px;
     padding-bottom: 8px;
     text-align: center;
