@@ -73,7 +73,6 @@ mainApp.factory('eventSource', [
                 };
             }
         };
-
         return eventSource;
     }
 ]);
@@ -111,20 +110,26 @@ mainApp.service('parsePlaybooks', [
             var books = {};
 
             for (var playbook in playbooks["playbooks"]) {
+
                 var tmp_playbook = playbooks["playbooks"][playbook];
+
                 var play = {
                     name: tmp_playbook.name,
                     shortcode: tmp_playbook.shortname,
                     fields: this.generateElements(tmp_playbook.fields),
                 };
+
                 books[play.shortcode] = play;
+
             }
             return books;
         };
 
-        this.getRemoteValue = function(path) {            
+        this.getRemoteValue = function(path, params) {
             var def = $q.defer();
-            $http.get(path).then(function(res) {
+            $http.get(path, {
+                params
+            }).then(function(res) {
                 def.resolve(res);
             }, function(res) {
                 def.reject(res);
@@ -151,7 +156,13 @@ mainApp.service('parsePlaybooks', [
                 var remote = tmp_field["remoteValues"];
 
                 if (remote !== undefined) {
-                    var hold_value = this.getRemoteValue(remote.path);
+                    var params = {};
+
+                    for(var param in remote.params) {
+                        params[remote.params[param].name] = $rootScope.inputConversions[remote.params[param].name];
+                    }
+                  
+                    var hold_value = this.getRemoteValue(remote.path, params);
                     var hold_binding = binding;
                     hold_value.then(function(res) {
                         //TODO: DO PROPER LIKE

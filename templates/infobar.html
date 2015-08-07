@@ -2,23 +2,16 @@
 	<div class='col-md-2 form-inline' role='form'>
 		<h2>
 		Server Group Selected:
-		<select ng-model='brandCodeSelected'>
-			<option value='br'>BR</option>
-			<option value='ch'>CH</option>
-			<option value='ly'>LY</option>
-			<option value='fbm'>FBM</option>
-			<option value='wl'>WL</option>
-			<option value='zz'>ZZ</option>
+		<select ng-model='brandCodeSelected' ng-options="o as o for o in serverGroups" ng-change="updateValues($event)">
+			
 		</select>
 		</h2>
 	</div>
-	<div class='col-md-2 form-inline' role='form'>
+	<div class='col-md-2 form-inline' role='form' >
 		<h2>
 		Server Type:
-		<select ng-model='serverTypeSelected'>
-			<option value='test'>Test</option>
-			<option value='live'>Live</option>
-			<option value='all'>All</option>
+		<select ng-model='serverTypeSelected' ng-options="o as o for o in serverTypes" ng-change="updateValues($event)">
+			
 		</select>
 		</h2>
 	</div>

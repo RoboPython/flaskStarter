@@ -9,6 +9,12 @@ controllers.controller('mainController', [
     'parsePlaybooks',
     function($rootScope, $scope, $http, $sce, sharedProps, ajaxOperations, parseJson, parsePlaybooks) {
         //Variables local to page
+        $rootScope.serverGroups = ["br", "ch", "zz", "fbm", "wl", "ly"];
+        $rootScope.serverTypes = ["all", "test", "live"];
+
+        $rootScope.brandCodeSelected = "zz";
+        $rootScope.serverTypeSelected = "test";
+
         $rootScope.filetree = sharedProps.filetreeData;
         $rootScope.parsedFileTree = null;
         $rootScope.playbooks = sharedProps.playbookData;
@@ -26,13 +32,18 @@ controllers.controller('mainController', [
             currentPage: null
         };
 
-        $rootScope.brandCodeSelected = "zz";
-        $rootScope.serverTypeSelected = "test"
-        // $scope.controlList.localCopy.source = $scope.controlList.listVersions.data[$scope.brandCodeSelected].data[$scope.serverTypeSelected].flat[0]
         $scope.adminTab = 'active';
         $scope.developerTab = '';
         $scope.adminActions = true;
         $scope.developerActions = false;
+
+        $scope.updateValues = function(e) {
+            $rootScope.inputConversions = {
+                serverType: $scope.serverTypeSelected.toLowerCase(),
+                code: $scope.brandCodeSelected.toLowerCase()
+            };
+            $scope.site.playbooks = parsePlaybooks.parse($rootScope.playbooks);
+        };
 
         $scope.expandTask = function(task) {
             $scope.currentTab = task;
@@ -43,20 +54,20 @@ controllers.controller('mainController', [
             } else {
                 $scope.site.currentBook = null;
                 $scope.site.currentPage = $scope.site.staticPages[task];
-                
-
             }
         };
 
         $scope.loadCache = function(brandCodeSelected) {
             ajaxOperations.getFiletree(brandCodeSelected).success(function(data, status, headers) {
-                console.log(data)
+                $scope.filetree = data;
             }).error(function() {
 
             });
         }
 
         $scope.init = function() {
+
+
             $scope.expandTask($scope.currentTab);
         };
     }

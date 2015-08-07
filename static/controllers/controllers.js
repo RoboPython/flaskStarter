@@ -13,7 +13,6 @@ controllers.controller('versions', [
 
         $scope.init = function() {
             $scope.parseFileTree($rootScope.filetree);
-
         };
 
         $scope.getFiletree = function(brand_code) {
@@ -54,7 +53,6 @@ controllers.controller('serverLinkControl', [
 
         $scope.messageHandler = function(msg) {
             //Close connection when finished event recieved.
-            console.log(msg);
             $scope.tasks[$scope.code].tasks.push(msg);
             $scope.$apply()
 
@@ -62,6 +60,10 @@ controllers.controller('serverLinkControl', [
                 $scope.running = false;
                 this.close();
             };
+        };
+
+        $scope.clear = function() {
+            $scope.tasks[$scope.code].tasks = [];
         };
 
         $scope.errorHandler = function(err) {
