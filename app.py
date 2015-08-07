@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.debug = True
 
 Triangle(app)
-scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
+#scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('config/config.json','r')
 config = json.loads(config.read())
@@ -30,6 +30,7 @@ MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 LIST_OF_SERVERS = config['list_of_servers']
 SERVER_FILE_PATH = config['server_file_path']
+filetree = []
 
 
 playbooks = None
@@ -201,21 +202,20 @@ def refreshFiletreeOLD():
     return json.dumps(filetree)
     
 
-
 @app.route('/refreshFiletreeCache')
 def refreshFiletree():
     server_codes = config['list_of_servers']
     returnObj = {}
 
-    filetree = []
+    events = []
+    #for code in server_codes:
 
-    def formatter(event):
-        filetree.append(event)
-
-        
-    for code in server_codes:
-
-        bridge.run_task_call_callback('ntdr_get_filetree.py', '../ansible/ntdr-pas/playbooks/library', '../ansible/ntdr-pas/playbooks/inventory/cottage-servers', code , {'path':'/var/www'}, formatter)
+    for event in bridge.run_task_yield_events('ntdr_get_filetree.py',
+                    '../ansible/ntdr-pas/playbooks/library',
+                    '../ansible/ntdr-pas/playbooks/inventory/cottage-servers',
+                    "zz",
+                    {'path':'/var/www'}):
+        events.append(event)
         '''
         filetree_data = {
              "data":{
@@ -230,12 +230,12 @@ def refreshFiletree():
 
         returnObj[code] = filetree_data
         '''
-    returnObj = json.dumps(returnObj, separators =(',',':'))
-    f = open(PATH_PYTHON_APP+'filetree.txt','w')
-    f.write(returnObj)
-    f.close()
+    #returnObj = json.dumps(returnObj, separators =(',',':'))
+    #f = open(PATH_PYTHON_APP+'filetree.txt','w')
+    #f.write(returnObj)
+    #f.close()
 
-    return json.dumps({"filetree":filetree},separators=(',',':'))
+    return json.dumps(events, separators=(',',':'))
 
 
 
