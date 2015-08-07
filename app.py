@@ -41,6 +41,29 @@ with open('config/playbooks.json', 'r') as playbooks_file:
 
 
 
+def task_parser(string_value, brandcode): 
+    string_value = re.split('\n\s*\n', string_value)  
+    
+    tempArray = []
+    for element in string_value:
+        if not element.strip() == '':
+            tempArray.append(element)
+
+    string_value = tempArray
+    tempArray = []
+        
+
+    for element in string_value:
+        element =  element.replace(brandcode+'_test | success >>','')
+        element =  element.replace(brandcode+'_live | success >>','')
+        tempArray.append(element)
+    return tempArray
+
+
+
+
+
+
 @app.route('/')
 def redesign():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
@@ -51,22 +74,24 @@ def redesign():
     f2.close()
     return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbook_json":playbook_json})
 
+@app.route('/versions')
+def versions()
+    f = open(PATH_TO_CACHE+'filetree.cache','r')
+    filetree_cache = f.read().strip()
+    f.close()
+    return filetree_cache
 
 
-@app.route('/playbooks.json')
-def get_playbooks():
-    playbooks_raw = json.dumps(playbooks)
-    return Response(response=playbooks_raw, status=200, mimetype="application/json")
 
 
 
-@app.route('/run_playbook', methods=['POST'])
+@app.route('/run_playbook', methods=['GET'])
 def call_run_playbook():
     shortname = None
-    print request.form
     print request.args
-    if "shortname" in request.form:
-        shortname = request.form["shortname"]
+    print request.args
+    if "shortname" in request.args:
+        shortname = request.args["shortname"]
     else:
         return flask.jsonify(error="'shortname' parameter was missing"),400
     playbook = None
@@ -77,14 +102,14 @@ def call_run_playbook():
         return flask.jsonify(error="'shortname' value '" + shortname + "' does not exist")
     extra_vars = {}
     for field in playbook['fields']:
-        if not field['name'] in request.form:
+        if not field['name'] in request.args:
             if field['required']:
                 return flask.jsonify(error="Field '" + field['name'] + "' is required")
             else:
                 # TODO: implement default values
                 continue
         else:
-            value = request.form[field['name']]
+            value = request.args[field['name']]
             returnTypeCaster = None
             if field['returnType'] == 'string':
                 returnTypeCaster = str
@@ -111,13 +136,13 @@ def call_run_playbook():
     playbook_path = PATH_TO_ANSIBLE + '/' + playbook['yaml']
     inventory_path = PATH_TO_ANSIBLE + '/inventory'
 
-    if "code" in request.form:
-        code = request.form["code"]
+    if "code" in request.args:
+        code = request.args["code"]
     else:
         return flask.jsonify(error="'code' parameter was missing")
 
-    if "serverType" in request.form:
-        server_type = request.form["serverType"]
+    if "serverType" in request.args:
+        server_type = request.args["serverType"]
     else:
         return flask.jsonify(error=" 'serverType' parameter was missing")
 
@@ -134,6 +159,49 @@ def call_run_playbook():
     else:
         return '\n Error: request header is not "text/event-stream" \n'
 
+
+
+@app.route('/refreshFiletreeCache')
+def refreshFiletree():
+    server_codes = config['list_of_servers']
+    returnObj = {}
+    for code in server_codes:
+         print 'we are doing stuff honest'
+         os.chdir(PATH_TO_ANSIBLE)
+         filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
+         filetree = subprocess.check_output(filetree_command)
+         filetree = task_parser(filetree,code)
+         tasks = [
+             {
+                 'name': 'Get file Tree from /var/www on the '+ code +' server group',
+                 'success': True,
+                 'errorMessage': None
+             }
+         ]
+        
+         print filetree[0]
+         print filetree[1]
+         filetree_data = {
+             "data":{
+                 "test": json.loads(filetree[0])['stat']['files'],
+                 "live": json.loads(filetree[1])['stat']['files']
+             },
+             "meta":{
+                 "tasks": tasks
+             },
+             "code": code
+         }
+
+         returnObj[code] = filetree_data
+    returnObj = json.dumps(returnObj, separators =(',',':'))
+    f = open(PATH_PYTHON_APP+'filetree.txt','w')
+    f.write(returnObj)
+    f.close()
+    return json.dumps(filetree)
+    
+
+
+
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
 def getFiletree():
@@ -145,7 +213,7 @@ def getFiletree():
         # filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
         # filetree = subprocess.check_output(filetree_command)
         # filetree = task_parser(filetree,code)
-        filetree = ["zz_0.1", "zz_0.2", "latest", "testing"]
+        filetree = ["/var/www/zz_0.1", "/var/www/zz_0.2", "/var/www/latest", "/var/www/testing"]
     #     tasks = [
     #         {
     #             'name': 'Get file Tree from /var/www on the '+ code +' server group',

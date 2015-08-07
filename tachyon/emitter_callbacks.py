@@ -10,7 +10,7 @@ class EmitterCallbacks:
     Called when task in playbook fails.
     '''
     def on_failed(self, host, res, ignore_errors=False):
-        return_dict = {"event_type":"failed","host":host,"res":res,"ignore_error":ignore_errors}
+        return_dict = {"event":"failed","host":host,"res":res,"ignore_error":ignore_errors}
         self.emitter(return_dict)
 
     '''
