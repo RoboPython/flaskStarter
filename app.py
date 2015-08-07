@@ -75,7 +75,7 @@ def redesign():
     return render_template('index.html', data = {"filetree_cache":filetree_cache,"playbook_json":playbook_json})
 
 @app.route('/versions')
-def versions()
+def versions():
     f = open(PATH_TO_CACHE+'filetree.cache','r')
     filetree_cache = f.read().strip()
     f.close()

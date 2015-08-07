@@ -4,7 +4,7 @@ mainApp.factory('ajaxOperations', [
         var AjaxOperations = {};
 
         AjaxOperations.getFiletree = function(brand_code) {
-            return $http.get('/getFiletree?code=' + brand_code);
+            return $http.get('/filetree?code=' + brand_code);
         };
 
         // AjaxOperations.localCopy = function(brand_code, local, source, server_type, withdb) {
