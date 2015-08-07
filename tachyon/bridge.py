@@ -38,3 +38,5 @@ def run_playbook_yield_events(playbook_path, inventory_path, subset, extra_vars)
         yield "data: %s\n\n" %json.dumps(callback_json)
         if callback_json['event'] == 'finished':
             break
+
+

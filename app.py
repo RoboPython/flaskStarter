@@ -28,7 +28,7 @@ PATH_PYTHON_APP = config['path_python_app']
 MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 LIST_OF_SERVERS = config['list_of_servers']
-
+SERVER_FILE_PATH = config['server_file_path']
 
 
 playbooks = None
@@ -168,7 +168,7 @@ def refreshFiletree():
     for code in server_codes:
          print 'we are doing stuff honest'
          os.chdir(PATH_TO_ANSIBLE)
-         filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
+         filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path='+SERVER_FILE_PATH]
          filetree = subprocess.check_output(filetree_command)
          filetree = task_parser(filetree,code)
          tasks = [
@@ -205,43 +205,21 @@ def refreshFiletree():
 #ansible -i inventory/cottage-servers zz -m ntdr_get_filetree.py -a path=/var/www
 @app.route('/getFiletree', methods=['GET'])
 def getFiletree():
-    server_codes = config['list_of_servers']
-    returnObj = {}
-    for code in server_codes:
-        # print 'we are doing stuff honest'
-        # os.chdir(PATH_TO_ANSIBLE)
-        # filetree_command = ['ansible', '-i', 'inventory/cottage-servers', code, '-m', 'ntdr_get_filetree.py', '-a', 'path=/var/www']
-        # filetree = subprocess.check_output(filetree_command)
-        # filetree = task_parser(filetree,code)
-        filetree = ["/var/www/zz_0.1", "/var/www/zz_0.2", "/var/www/latest", "/var/www/testing"]
-    #     tasks = [
-    #         {
-    #             'name': 'Get file Tree from /var/www on the '+ code +' server group',
-    #             'success': True,
-    #             'errorMessage': None
-    #         }
-    #     ]
+    f = open(PATH_TO_CACHE+'filetree.cache','r')
+    filetree_cache = f.read().strip()
+    f.close()
+    filetree_cache = json.loads(filetree_cache)
+    code = request.args['code']
+    server_type = request.args['serverType']
+    retList = filetree_cache[code]["data"][server_type]["flat"]
+    tempList = []
+    for path in retList:
+        tempList.append(SERVER_FILE_PATH + path['name'])
+    retList = tempList
 
-    #     filetree_data = {
-    #         "data":{
-    #             "test": json.loads(filetree[0])['stat']['files'],
-    #             "live": json.loads(filetree[1])['stat']['files']
-    #         },
-    #         "meta":{
-    #             "tasks": tasks
-    #         },
-    #         "code": code
-    #     }
+    #filetree = ["/var/www/zz_0.1", "/var/www/zz_0.2", "/var/www/latest", "/var/www/testing"]
 
-    #     returnObj[code] = filetree_data
-
-    # returnObj = json.dumps(returnObj, separators =(',',':'))
-
-
-    # f = open(PATH_PYTHON_APP+'filetree.txt','w')
-    
-
-    return json.dumps(filetree)
+    return json.dumps(retList)
 
 
 # def run_playbook(playbook_path, inventory_path, event_callback=None):
