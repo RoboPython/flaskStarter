@@ -4,7 +4,7 @@ mainApp.factory('ajaxOperations', [
         var AjaxOperations = {};
 
         AjaxOperations.getFiletree = function(brand_code) {
-            return $http.get('/filetree?code=' + brand_code);
+            return $http.get('/versions?code=' + brand_code);
         };
 
         // AjaxOperations.localCopy = function(brand_code, local, source, server_type, withdb) {
@@ -122,7 +122,6 @@ mainApp.service('parsePlaybooks', [
             return books;
         };
 
-
         this.getRemoteValue = function(path) {            
             var def = $q.defer();
             $http.get(path).then(function(res) {
@@ -150,15 +149,14 @@ mainApp.service('parsePlaybooks', [
 
                 //Check if external data required here
                 var remote = tmp_field["remoteValues"];
-                var prom = null;
 
                 if (remote !== undefined) {
-                    var valluu = this.getRemoteValue(remote.path);
-                    var right_binding = binding;
-                    valluu.then(function(res) {
+                    var hold_value = this.getRemoteValue(remote.path);
+                    var hold_binding = binding;
+                    hold_value.then(function(res) {
                         //TODO: DO PROPER LIKE
-                        right_binding.model_bind = res.data[0];
-                        right_binding.model_options = res.data;
+                        hold_binding.model_bind = res.data[0];
+                        hold_binding.model_options = res.data;
                     });
                 }
 

@@ -30,7 +30,7 @@ controllers.controller('versions', [
 
         $scope.parseFileTree = function(filetreeData) {
             parseJson.unjsonify($rootScope.filetree, ["meta", "flat"]).then(function(data) {
-                $scope.controlList.listVersions.parsedData = data;
+                $scope.filetree = data;
             }, function(err) {
                 console.log("Fail:" + err);
             });
@@ -38,7 +38,7 @@ controllers.controller('versions', [
     }
 ]);
 
-controllers.controller('pullcopylocal', [
+controllers.controller('serverLinkControl', [
 
     '$rootScope',
     '$scope',

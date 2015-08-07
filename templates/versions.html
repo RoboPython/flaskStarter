@@ -1,11 +1,11 @@
-<div class='row' role="contain" ng-show='activeTab == "listVersions"' ng-controller='versions' data-ng-init='init()'>
+<div class='row' ng-show='site.currentPage.shortcode == "versions"' ng-controller='versions' data-ng-init='init()'>
 	<div class='col-md-12'>
 		<div class='row'>
 			<div class='col-md-6 col-md-offset-1'>
 				<br>
 				<h2> File Tree with available versions for the currently selected server group</h2>
 				<button ng-click='getFiletree(brandCodeSelected)' class="btn btn-default btn-lg" >Check for updates to file tree</button>
-				<p compile="controlList.listVersions.parsedData"></p>
+				<p compile="filetree"></p>
 			</div>
 		</div>
 	</div>

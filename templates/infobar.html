@@ -1,5 +1,5 @@
 <div class='row info-bar'>
-	<div class='col-md-4 form-inline' role='form'>
+	<div class='col-md-2 form-inline' role='form'>
 		<h2>
 		Server Group Selected:
 		<select ng-model='brandCodeSelected'>
@@ -12,7 +12,7 @@
 		</select>
 		</h2>
 	</div>
-	<div class='col-md-4 form-inline' role='form'>
+	<div class='col-md-2 form-inline' role='form'>
 		<h2>
 		Server Type:
 		<select ng-model='serverTypeSelected'>
@@ -21,5 +21,8 @@
 			<option value='all'>All</option>
 		</select>
 		</h2>
+	</div>
+	<div class='col-md-2 form-inline' role='form'>
+		<button  ng-click="loadCache(brandCodeSelected)" class="btn btn-success">Reload cache</button>
 	</div>
 </div>

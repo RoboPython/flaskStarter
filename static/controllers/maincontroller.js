@@ -10,12 +10,20 @@ controllers.controller('mainController', [
     function($rootScope, $scope, $http, $sce, sharedProps, ajaxOperations, parseJson, parsePlaybooks) {
         //Variables local to page
         $rootScope.filetree = sharedProps.filetreeData;
+        $rootScope.parsedFileTree = null;
         $rootScope.playbooks = sharedProps.playbookData;
         $scope.currentTab = "localCopy";
 
         $scope.site = {
             playbooks: parsePlaybooks.parse($rootScope.playbooks),
-            currentBook: null
+            staticPages: {
+                versions: {
+                    path: 'versions.html',
+                    shortcode: 'versions'
+                }
+            },
+            currentBook: null,
+            currentPage: null
         };
 
         $rootScope.brandCodeSelected = "zz";
@@ -28,12 +36,28 @@ controllers.controller('mainController', [
 
         $scope.expandTask = function(task) {
             $scope.currentTab = task;
-            $scope.site.currentBook = $scope.site.playbooks[$scope.currentTab]; 
+            var currPlaybook = $scope.site.playbooks[task];
+            if (currPlaybook) {
+                $scope.site.currentBook = currPlaybook;
+                $scope.site.currentPage = null;
+            } else {
+                $scope.site.currentBook = null;
+                $scope.site.currentPage = $scope.site.staticPages[task];
+                
+
+            }
         };
+
+        $scope.loadCache = function(brandCodeSelected) {
+            ajaxOperations.getFiletree(brandCodeSelected).success(function(data, status, headers) {
+                console.log(data)
+            }).error(function() {
+
+            });
+        }
 
         $scope.init = function() {
             $scope.expandTask($scope.currentTab);
-            console.log($scope.site.currentBook);
         };
     }
 ]);
