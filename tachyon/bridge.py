@@ -3,11 +3,14 @@ import Queue
 import threading
 
 from ansible.playbook import PlayBook
+from ansible.runner import Runner
 from ansible.inventory import Inventory # TODO - check if needed
 from ansible import callbacks
-from ansible import utils # TODO - check if needed
 
 from tachyon.emitter_callbacks import EmitterCallbacks
+
+# TODO: document functions, as they sure 'ain't documented by Ansible
+# TODO: reduce code repetition
 
 def run_playbook_call_callback(playbook_path, inventory_path, extra_vars, subset, event_callback):
     callbacks_object = EmitterCallbacks(event_callback)
@@ -22,7 +25,7 @@ def run_playbook_call_callback(playbook_path, inventory_path, extra_vars, subset
         subset           =   subset
     )
     results = pb.run()
-
+    # TODO: use the result of AggregateStats - must be converted to a dict object
     callbacks_object.on_complete()
 
 def run_playbook_yield_events(playbook_path, inventory_path, subset, extra_vars):
@@ -39,4 +42,17 @@ def run_playbook_yield_events(playbook_path, inventory_path, subset, extra_vars)
         if callback_json['event'] == 'finished':
             break
 
+def run_task_call_callback(module_name, module_path, inventory_path, extra_vars, subset, event_callback):
+    callbacks_object = EmitterCallbacks(event_callback)
+    runner = Runner(
+        module_name     =   module_name,
+        module_path     =   module_path,
+        inventory       =   Inventory(inventory_path),
+        module_args     =   extra_vars,
+        callbacks       =   callbacks_object,
+        subset          =   subset
+    )
+    results = runner.run()
+    # TODO: use the result of AggregateStats - must be converted to a dict object
+    callbacks_object.on_complete()
 

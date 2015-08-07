@@ -161,8 +161,8 @@ def call_run_playbook():
 
 
 
-@app.route('/refreshFiletreeCache')
-def refreshFiletree():
+@app.route('/refreshFiletreeCacheOLD')
+def refreshFiletreeOLD():
     server_codes = config['list_of_servers']
     returnObj = {}
     for code in server_codes:
@@ -199,6 +199,38 @@ def refreshFiletree():
     f.close()
     return json.dumps(filetree)
     
+
+
+@app.route('/refreshFiletreeCache')
+def refreshFiletree():
+    server_codes = config['list_of_servers']
+    returnObj = {}
+
+    def formatter(event):
+        print event
+
+    for code in server_codes:
+
+        bridge.run_task_call_callback('ntdr_get_filetree.py', '../ansible/ntdr-pas/playbooks/library', '../ansible/ntdr-pas/playbooks/inventory/cottage-servers', 'zz_live' , {'path':'/var/www'}, formatter)
+
+        filetree_data = {
+             "data":{
+                 "test": json.loads(filetree[0])['stat']['files'],
+                 "live": json.loads(filetree[1])['stat']['files']
+             },
+             "meta":{
+                 "tasks": tasks
+             },
+             "code": code
+         }
+
+        returnObj[code] = filetree_data
+
+    returnObj = json.dumps(returnObj, separators =(',',':'))
+    f = open(PATH_PYTHON_APP+'filetree.txt','w')
+    f.write(returnObj)
+    f.close()
+    return json.dumps(filetree)
 
 
 
