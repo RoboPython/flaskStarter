@@ -1,3 +1,4 @@
+
 import json
 import Queue
 import threading
@@ -9,6 +10,9 @@ from ansible import callbacks
 
 from tachyon.emitter_callbacks import EmitterCallbacks
 
+# TODO: consider separating wrapper functions and just documenting Ansible,
+#       instead of maintaining a bridge where each new argument must be
+#       reimplemented
 # TODO: document functions, as they sure 'ain't documented by Ansible
 # TODO: reduce code repetition
 
@@ -42,7 +46,7 @@ def run_playbook_yield_events(playbook_path, inventory_path, subset, extra_vars)
         if callback_json['event'] == 'finished':
             break
 
-def run_task_call_callback(module_name, module_path, inventory_path, extra_vars, subset, event_callback):
+def run_task_call_callback(module_name, module_path, inventory_path, subset, extra_vars, event_callback):
     callbacks_object = EmitterCallbacks(event_callback)
     runner = Runner(
         module_name     =   module_name,
@@ -53,6 +57,5 @@ def run_task_call_callback(module_name, module_path, inventory_path, extra_vars,
         subset          =   subset
     )
     results = runner.run()
-    # TODO: use the result of AggregateStats - must be converted to a dict object
     callbacks_object.on_complete()
 

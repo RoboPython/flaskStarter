@@ -13,6 +13,7 @@ import re
 import json
 import random
 import os
+import Queue
 
 app = Flask(__name__)
 app.debug = True
@@ -206,13 +207,16 @@ def refreshFiletree():
     server_codes = config['list_of_servers']
     returnObj = {}
 
-    def formatter(event):
-        print event
+    filetree = []
 
+    def formatter(event):
+        filetree.append(event)
+
+        
     for code in server_codes:
 
-        bridge.run_task_call_callback('ntdr_get_filetree.py', '../ansible/ntdr-pas/playbooks/library', '../ansible/ntdr-pas/playbooks/inventory/cottage-servers', 'zz_live' , {'path':'/var/www'}, formatter)
-
+        bridge.run_task_call_callback('ntdr_get_filetree.py', '../ansible/ntdr-pas/playbooks/library', '../ansible/ntdr-pas/playbooks/inventory/cottage-servers', code , {'path':'/var/www'}, formatter)
+        '''
         filetree_data = {
              "data":{
                  "test": json.loads(filetree[0])['stat']['files'],
@@ -225,12 +229,13 @@ def refreshFiletree():
          }
 
         returnObj[code] = filetree_data
-
+        '''
     returnObj = json.dumps(returnObj, separators =(',',':'))
     f = open(PATH_PYTHON_APP+'filetree.txt','w')
     f.write(returnObj)
     f.close()
-    return json.dumps(filetree)
+
+    return json.dumps({"filetree":filetree},separators=(',',':'))
 
 
 
