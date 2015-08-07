@@ -1,8 +1,8 @@
 {
 	"playbooks":[
 		{
-			"name":"Pull a local copy of live site",
-			"shortname":"localCopy",
+			"name":"Pull a local copy of live site",				# The display name used by the website 
+			"shortname":"localCopy",								# The sensible variable name used
 			"yaml": "pull-full-copy.yml",
 			"fields":[
 				{
@@ -22,18 +22,7 @@
 					"valueType":"api",
 					"remoteValues":{
 						"method":"GET",
-						"path":"/getFiletree",
-						"params":[
-							{"name":"code",
-							 "returnType":"string",
-							 "placeholder":"zz"
-							},
-							{"name":"serverType",
-							 "returnType":"string",
-							 "placeholder":"test"
-							}
-
-						]
+						"path":"/getFiletree"
 
 					}
 
