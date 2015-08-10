@@ -13,12 +13,13 @@ import re
 import json
 import random
 import os
+import Queue
 
 app = Flask(__name__)
 app.debug = True
 
 Triangle(app)
-scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
+#scss = Scss(app, static_dir='static/dep/styles', asset_dir='assets');
 
 config = open('config/config.json','r')
 config = json.loads(config.read())
@@ -29,6 +30,7 @@ MYSQL_ROOT_PW = config['mysql_root_pw']
 PATH_TO_CACHE = config['path_python_app'] + 'cache/'
 LIST_OF_SERVERS = config['list_of_servers']
 SERVER_FILE_PATH = config['server_file_path']
+filetree = []
 
 
 playbooks = None
@@ -161,8 +163,8 @@ def call_run_playbook():
 
 
 
-@app.route('/refreshFiletreeCache')
-def refreshFiletree():
+@app.route('/refreshFiletreeCacheOLD')
+def refreshFiletreeOLD():
     server_codes = config['list_of_servers']
     returnObj = {}
     for code in server_codes:
@@ -199,6 +201,41 @@ def refreshFiletree():
     f.close()
     return json.dumps(filetree)
     
+
+@app.route('/refreshFiletreeCache')
+def refreshFiletree():
+    server_codes = config['list_of_servers']
+    returnObj = {}
+
+    events = []
+    #for code in server_codes:
+
+    for event in bridge.run_task_yield_events('ntdr_get_filetree.py',
+                    '../ansible/ntdr-pas/playbooks/library',
+                    '../ansible/ntdr-pas/playbooks/inventory/cottage-servers',
+                    "zz",
+                    {'path':'/var/www'}):
+        events.append(event)
+        '''
+        filetree_data = {
+             "data":{
+                 "test": json.loads(filetree[0])['stat']['files'],
+                 "live": json.loads(filetree[1])['stat']['files']
+             },
+             "meta":{
+                 "tasks": tasks
+             },
+             "code": code
+         }
+
+        returnObj[code] = filetree_data
+        '''
+    #returnObj = json.dumps(returnObj, separators =(',',':'))
+    #f = open(PATH_PYTHON_APP+'filetree.txt','w')
+    #f.write(returnObj)
+    #f.close()
+
+    return json.dumps(events, separators=(',',':'))
 
 
 

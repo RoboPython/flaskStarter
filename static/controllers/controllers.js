@@ -13,7 +13,6 @@ controllers.controller('versions', [
 
         $scope.init = function() {
             $scope.parseFileTree($rootScope.filetree);
-
         };
 
         $scope.getFiletree = function(brand_code) {
@@ -30,7 +29,7 @@ controllers.controller('versions', [
 
         $scope.parseFileTree = function(filetreeData) {
             parseJson.unjsonify($rootScope.filetree, ["meta", "flat"]).then(function(data) {
-                $scope.controlList.listVersions.parsedData = data;
+                $scope.filetree = data;
             }, function(err) {
                 console.log("Fail:" + err);
             });
@@ -38,7 +37,7 @@ controllers.controller('versions', [
     }
 ]);
 
-controllers.controller('pullcopylocal', [
+controllers.controller('serverLinkControl', [
 
     '$rootScope',
     '$scope',
@@ -54,7 +53,6 @@ controllers.controller('pullcopylocal', [
 
         $scope.messageHandler = function(msg) {
             //Close connection when finished event recieved.
-            console.log(msg);
             $scope.tasks[$scope.code].tasks.push(msg);
             $scope.$apply()
 
@@ -62,6 +60,10 @@ controllers.controller('pullcopylocal', [
                 $scope.running = false;
                 this.close();
             };
+        };
+
+        $scope.clear = function() {
+            $scope.tasks[$scope.code].tasks = [];
         };
 
         $scope.errorHandler = function(err) {

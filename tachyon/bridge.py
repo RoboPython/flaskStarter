@@ -58,3 +58,20 @@ def run_task_call_callback(module_name, module_path, inventory_path, subset, ext
     )
     results = runner.run()
     callbacks_object.on_complete()
+
+def run_task_yield_events(module_name, module_path, inventory_path, subset, extra_vars):
+    callback_queue = Queue.Queue()
+
+    def on_task_dict(returned_object):
+        callback_queue.put(returned_object)
+    
+    task_thread =threading.Thread(target=run_task_call_callback,args=(module_name, module_path, inventory_path,subset,extra_vars,on_task_dict))
+    task_thread.start()
+    
+    for callback_json in iter(callback_queue.get,None):
+        print callback_json
+        yield callback_json
+        print(callback_json)
+        if callback_json['event'] == 'finished':
+            break
+

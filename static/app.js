@@ -18,10 +18,14 @@ var mainApp = angular.module('mainApp', ['controllers'])
 
 mainApp.run(function($rootScope) {
     console.log("Angular app successfully started.");
-
     $rootScope.typeConversions = {
         select: "select",
         text: "input",
         checkbox: "input"
+    };
+    
+    $rootScope.inputConversions = {
+        serverType: "test",
+        code: "zz"
     };
 });

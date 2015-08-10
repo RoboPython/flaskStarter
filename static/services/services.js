@@ -4,7 +4,7 @@ mainApp.factory('ajaxOperations', [
         var AjaxOperations = {};
 
         AjaxOperations.getFiletree = function(brand_code) {
-            return $http.get('/getFiletree?code=' + brand_code);
+            return $http.get('/versions?code=' + brand_code);
         };
 
         // AjaxOperations.localCopy = function(brand_code, local, source, server_type, withdb) {
@@ -73,7 +73,6 @@ mainApp.factory('eventSource', [
                 };
             }
         };
-
         return eventSource;
     }
 ]);
@@ -111,21 +110,26 @@ mainApp.service('parsePlaybooks', [
             var books = {};
 
             for (var playbook in playbooks["playbooks"]) {
+
                 var tmp_playbook = playbooks["playbooks"][playbook];
+
                 var play = {
                     name: tmp_playbook.name,
                     shortcode: tmp_playbook.shortname,
                     fields: this.generateElements(tmp_playbook.fields),
                 };
+
                 books[play.shortcode] = play;
+
             }
             return books;
         };
 
-
-        this.getRemoteValue = function(path) {            
+        this.getRemoteValue = function(path, params) {
             var def = $q.defer();
-            $http.get(path).then(function(res) {
+            $http.get(path, {
+                params
+            }).then(function(res) {
                 def.resolve(res);
             }, function(res) {
                 def.reject(res);
@@ -150,15 +154,20 @@ mainApp.service('parsePlaybooks', [
 
                 //Check if external data required here
                 var remote = tmp_field["remoteValues"];
-                var prom = null;
 
                 if (remote !== undefined) {
-                    var valluu = this.getRemoteValue(remote.path);
-                    var right_binding = binding;
-                    valluu.then(function(res) {
+                    var params = {};
+
+                    for(var param in remote.params) {
+                        params[remote.params[param].name] = $rootScope.inputConversions[remote.params[param].name];
+                    }
+                  
+                    var hold_value = this.getRemoteValue(remote.path, params);
+                    var hold_binding = binding;
+                    hold_value.then(function(res) {
                         //TODO: DO PROPER LIKE
-                        right_binding.model_bind = res.data[0];
-                        right_binding.model_options = res.data;
+                        hold_binding.model_bind = res.data[0];
+                        hold_binding.model_options = res.data;
                     });
                 }
 

@@ -4,28 +4,38 @@
 	<!-- Sidebar -->
 	{% include 'sidebar.html' %}
 	
-	<div class='col-md-10'  ng-controller="pullcopylocal" data-ng-init='init()'>
+	<div class='col-md-10'>
 		<!-- Info bar -->
 		{% include 'infobar.html' %}
-		
-		<div class='row' role="contain">
-			<h1 class="row"> {{site.currentBook.name | angular}}</h1>
-			<fieldset class='row' ng-repeat="book in site.currentBook.fields">
-				<div class="col-md-3 col-md-offset-1">
-					<!-- <h3 class="section-title"> {{ book.name | angular }} </h3> -->
-					<p class="detail"> {{ book.label | angular }} </p>
-					<hr />
-					<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
-				<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="o as o for o in book.bindingData.model_options" ng-required="book.bindingData.model_required"></select>
+		<div class="serv-link" ng-controller="serverLinkControl" data-ng-init='init()'>
+			{% include 'taskrunner.html' %}
+			<div class='row' role="contain" ng-switch on="!!site.currentBook" >
+				<h1 class="row"> {{site.currentBook.name | angular}}</h1>
+				
+				<div class="pageWrap" ng-switch-when="true">
+					<fieldset class='row section-contain' ng-repeat="book in site.currentBook.fields">
+						<div class="col-md-3 col-md-offset-1">
+							<!-- <h3 class="section-title"> {{ book.name | angular }} </h3> -->
+							<p class="detail"> {{ book.label | angular }} </p>
+							<hr />
+							<input ng-if="book.element == 'input'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-required="book.bindingData.model_required"></input>
+						<select ng-if="book.element == 'select'" type="{{book.type | angular}}" ng-model="book.bindingData.model_bind" ng-options="o as o for o in book.bindingData.model_options" ng-required="book.bindingData.model_required"></select>
+					</div>
+				</fieldset>
+				
+				
+				<div class='col-md-11 col-md-offset-1'>
+					<button ng-click='go()' class="btn btn-default btn-lg" >Submit</button>
+				</div>
+				
 			</div>
-		</fieldset>
-	</div>
-	<div class='row'>
-		<div class='col-md-11 col-md-offset-1'>
-		<!-- brandCodeSelected,controlList.localCopy.local,controlList.localCopy.source.name,serverTypeSelected,controlList.localCopy.withdb -->
-			<button ng-click='go()' class="btn btn-default btn-lg" >Submit</button>
+			<div class="pageWrap" ng-switch-default>
+				{% include 'versions.html' %}
+			</div>
+			
 		</div>
 	</div>
+	
 </div>
 </div>
 {% include 'footer.html' %}

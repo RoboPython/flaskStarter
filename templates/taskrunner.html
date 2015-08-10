@@ -1,0 +1,39 @@
+<div class='row taskrunner'>
+				<div class='col-md-10'>
+					<button class="btn btn-cancel pull-right" ng-click="clear()">Clear</button>
+					<div ng-repeat='server in tasks'>
+						<h3>{{server.name | angular }}</h3>
+						<div ng-repeat='task in server.tasks'>
+							<br>
+							<div class='taskbar'>
+								<div ng-if='task.event == "ok"' class="row row-centered">
+									<div class="col-md-12 col-centered">
+										<b class="status-text">Status: <span class='success'>{{task.event | angular}}</span></b>
+										<div class="details-expand">
+											<div ng-click="showDetails($event)" class="btn btn-primary btn-xs show-details">
+												Details
+											</div>
+											<div class="details">
+												<b>{{task.name | angular}}</b>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div ng-if='task.event !== "ok"' class="row row-centered">
+									<div class="col-md-12 col-centered">
+										<p>Status: <span class='changed'>{{task.event | angular}}</span></p>
+										<div class="details-expand">
+											<div ng-click="showDetails($event)" class="btn btn-primary btn-xs show-details">
+												Details
+											</div>
+											<div class="details">
+												<b>{{task.res | angular}}</b>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>

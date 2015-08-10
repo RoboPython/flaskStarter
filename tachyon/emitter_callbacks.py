@@ -19,7 +19,6 @@ class EmitterCallbacks:
     def on_ok(self, host, res):
         return_dict = {"event":"ok","host":host,"res":res}
         self.emitter(return_dict)
-        self.emitter(return_dict)
 
     '''
     Called when task in playbook is skipped due to some flag being set telling the task not to run hence it is skipped.

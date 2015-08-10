@@ -32,11 +32,8 @@
 							 "returnType":"string",
 							 "placeholder":"test"
 							}
-
 						]
-
 					}
-
 				},
 				{
 					"name":"withdb",
