@@ -16,7 +16,7 @@ from tachyon.emitter_callbacks import EmitterCallbacks
 # TODO: document functions, as they sure 'ain't documented by Ansible
 # TODO: reduce code repetition
 
-def run_playbook_call_callback(playbook_path, inventory_path, extra_vars, subset, event_callback):
+def run_playbook_call_callback(playbook_path, inventory_path, subset, extra_vars, event_callback):
     callbacks_object = EmitterCallbacks(event_callback)
     stats = callbacks.AggregateStats()
     pb = PlayBook(
@@ -38,7 +38,7 @@ def run_playbook_yield_events(playbook_path, inventory_path, subset, extra_vars)
     def on_dict(returned_object):
         callback_queue.put(returned_object)
 
-    playbook_thread = threading.Thread(target=run_playbook_call_callback, args=(playbook_path, inventory_path, extra_vars, subset, on_dict))
+    playbook_thread = threading.Thread(target=run_playbook_call_callback, args=(playbook_path, inventory_path, subset, extra_vars, on_dict))
     playbook_thread.start()
 
     for callback_json in iter(callback_queue.get,None):
