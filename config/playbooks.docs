@@ -1,51 +1,50 @@
-{
-	"playbooks":[
-		{
-			"name":"Pull a local copy of live site",				# The display name used by the website 
-			"shortname":"localCopy",								# The sensible variable name used
-			"yaml": "pull-full-copy.yml",
-			"fields":[
-				{
-					"name":	"local",
-					"label":"Local directory to save in",
-					"type":"text",
-					"returnType":"string",
-					"required":true,
-					"placeholder":"/var/tmp"
-				},
-				{
-					"name":"source",
-					"label":"Select remote folder to pull",
-					"type":"select",
-					"returnType":"string",
-					"required":true,
-					"valueType":"api",
-					"remoteValues":{
-						"method":"GET",
-						"path":"/getFiletree"
+###################
+## playbook data ##
+###################
+* name: The display name used by the website 
+* shortname: The sensible variable name used
+* yaml: The name of the playbook file in the ansible folder (path found in config)
+* fields: array of json objects needed to describe the inputs needed for the playbook
 
-					}
+###########################
+## Field element options ##
+###########################
+* name: The parameter name that the information has when it is send back to the server
+* label: The label that the field is displayed with in the HTML
+* type: what type of input should the HTML use can have values text/select/checkbox
+* returnType: The type the server should expect from this parameter, can have values string/boolean/integer
+* required: takes a boolean, whether this field is required by the server  -- footnote 1
+* placeholder: the default value which this field takes
+* valueType: if a field has 'type':'select' then valueType tells it where it is going to get its options from,
+  'api' denotes the fields will come from doing a HTTP request and it expects 'remoteValues', 'local' denotes the options  
+  are contained within the json under 'localValues' which should contain an array of strings of the possible options -- footnote 2
 
-				},
-				{
-					"name":"withdb",
-					"label":"Create new DB?",
-					"type":"checkbox",
-					"returnType":"boolean",
-					"placeholder":false,
-					"required":false
+##################################
+## remoteValues element options ##
+##################################
+* method: which HTTP verb to use when requesting information from the given address, any HTTP verb allowed, 
+  GET & POST only reccomended
+* path: the path from the base url to request information from				
+* params: the array of parameters that should be send on the HTTP request
 
-				}
-			],
-			"configNodes":[
-				{
-					"argName": "mysql_root_pw",
-					"node": "mysql_root_pw"
-				}	
-			],
-			"constants":[]
+############################
+## params element options ##
+############################
+* name: the name of the parameter for the server to expect
+* returnType: the type of the parameter that the server should expect, can be string/boolean/integer
+* placeholder: the default value for the parameter
 
 
-		}
-	]
-}
+
+
+
+
+
+###############
+## Footnotes ##
+###############
+
+footnote 1 -- currently all values are required values therefore 'required':true must be present on all fields
+
+footnote 2 -- currently valueType : 'local' is NOT implemented nor is 'localValues'
+
