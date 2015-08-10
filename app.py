@@ -43,9 +43,9 @@ with open('config/playbooks.json', 'r') as playbooks_file:
 
 
 
-def task_parser(string_value, brandcode): 
-    string_value = re.split('\n\s*\n', string_value)  
-    
+def task_parser(string_value, brandcode):
+    string_value = re.split('\n\s*\n', string_value)
+
     tempArray = []
     for element in string_value:
         if not element.strip() == '':
@@ -53,7 +53,7 @@ def task_parser(string_value, brandcode):
 
     string_value = tempArray
     tempArray = []
-        
+
 
     for element in string_value:
         element =  element.replace(brandcode+'_test | success >>','')
@@ -125,13 +125,13 @@ def call_run_playbook():
                 return flask.jsonify(error="Field '" + field['name'] + "' could not be cast: " + str(e))
             if castValue != False:
                 extra_vars[field['name']] = castValue
-    
+
     for configObj in playbook['configNodes']:
         extra_vars[configObj["argName"]] = config[configObj['node']]
 
     for constantObj in playbook['constants']:
         extra_vars[configObj["argName"]] = configObj['value']
-    
+
 
     print(json.dumps(extra_vars))
 
@@ -180,7 +180,7 @@ def refreshFiletreeOLD():
                  'errorMessage': None
              }
          ]
-        
+
          print filetree[0]
          print filetree[1]
          filetree_data = {
@@ -200,36 +200,25 @@ def refreshFiletreeOLD():
     f.write(returnObj)
     f.close()
     return json.dumps(filetree)
-    
+
 
 @app.route('/refreshFiletreeCache')
 def refreshFiletree():
     server_codes = config['list_of_servers']
     returnObj = {}
 
-    events = []
+    events = {}
     #for code in server_codes:
 
-    for event in bridge.run_task_yield_events('ntdr_get_filetree.py',
-                    '../ansible/ntdr-pas/playbooks/library',
-                    '../ansible/ntdr-pas/playbooks/inventory/cottage-servers',
-                    "zz",
-                    {'path':'/var/www'}):
-        events.append(event)
-        '''
-        filetree_data = {
-             "data":{
-                 "test": json.loads(filetree[0])['stat']['files'],
-                 "live": json.loads(filetree[1])['stat']['files']
-             },
-             "meta":{
-                 "tasks": tasks
-             },
-             "code": code
-         }
-
-        returnObj[code] = filetree_data
-        '''
+    for server_code in server_codes:
+        server_events = []
+        for event in bridge.run_task_yield_events('ntdr_get_filetree.py',
+                        PATH_TO_ANSIBLE + '/library',
+                        PATH_TO_ANSIBLE + '/inventory/cottage-servers',
+                        server_code,
+                        {'path':SERVER_FILE_PATH}):
+            server_events.append(event)
+        events[server_code] = server_events
     #returnObj = json.dumps(returnObj, separators =(',',':'))
     #f = open(PATH_PYTHON_APP+'filetree.txt','w')
     #f.write(returnObj)

@@ -1,6 +1,9 @@
-class EmitterCallbacks:
+class EmitterCallbacks(object):
     def __init__(self, emitter):
-        self.emitter = emitter
+        self._emitter = emitter
+
+    def emitter(data):
+        self._emitter(data)
 
     ##############
     ### Runner ###
@@ -64,21 +67,21 @@ class EmitterCallbacks:
     ################
     ### PlayBook ###
     ################
-    
+
     '''
     Called when the running of the playbook begins.
     '''
     def on_start(self):
         return_dict = {"event":"start"}
         self.emitter(return_dict)
-        
+
     '''
     TODO.
     '''
     def on_notify(self, host, handler):
         return_dict = {"event":"notify","host":host,"handler":handler}
         self.emitter(return_dict)
-        
+
     '''
     TODO.
     '''
@@ -99,7 +102,7 @@ class EmitterCallbacks:
     def on_task_start(self, name, is_conditional):
         return_dict = {"event":"ok","name":name,"conditional":is_conditional}
         self.emitter(return_dict)
-        
+
 
     '''
     Called when the user is meant to be prompted for an input.
@@ -125,7 +128,7 @@ class EmitterCallbacks:
         return_dict = {"event":"import_for_host","host":host,"imported_file":imported_file}
         self.emitter(return_dict)
 
-    
+
     '''
     TODO.
     '''
@@ -133,7 +136,7 @@ class EmitterCallbacks:
         return_dict = {"event":"not_import_for_host", "host":host,"missing_file":missing_file}
         self.emitter(return_dict)
 
-        
+
 
     '''
     TODO.
